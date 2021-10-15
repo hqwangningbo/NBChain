@@ -25,7 +25,6 @@ use structopt::StructOpt;
 use sc_keystore::LocalKeystore;
 use nbx::chain_spec::{self, AccountId};
 use sp_core::{
-	sr25519,
 	crypto::{Public, Ss58Codec},
 };
 use sp_keystore::{SyncCryptoStorePtr, SyncCryptoStore};
@@ -57,9 +56,12 @@ enum ChainSpecBuilder {
 		/// The number of authorities.
 		#[structopt(long, short)]
 		authorities: usize,
-		/// The number of endowed accounts.
-		#[structopt(long, short, default_value = "0")]
-		endowed: usize,
+		/// Endowed account address (SS58 format).
+		#[structopt(long, short)]
+		endowed_accounts: Vec<String>,
+		/// Sudo account address (SS58 format).
+		#[structopt(long, short)]
+		sudo_account: String,
 		/// The path where the chain spec should be saved.
 		#[structopt(long, short, default_value = "./chain_spec.json")]
 		chain_spec_path: PathBuf,
@@ -122,10 +124,10 @@ fn generate_chain_spec(
 	let sudo_account = parse_account(sudo_account)?;
 
 	let chain_spec = chain_spec::ChainSpec::from_genesis(
-		"Custom",
-		"custom",
+		"MiniX",
+		"MiniX",
 		sc_chain_spec::ChainType::Live,
-		move || genesis_constructor(&authority_seeds,&endowed_accounts, &sudo_account),
+		move || genesis_constructor(&authority_seeds, &endowed_accounts, &sudo_account),
 		vec![],
 		None,
 		None,
@@ -146,17 +148,17 @@ fn generate_authority_keys_and_store(
 			None,
 		).map_err(|err| err.to_string())?);
 
-		let (aura,grandpa) =
+		let (aura, grandpa) =
 			chain_spec::authority_keys_from_seed(seed);
 
-		let insert_key = |key_type, public| {
-			SyncCryptoStore::insert_unknown(
-				&*keystore,
-				key_type,
-				&format!("//{}", seed),
-				public,
-			).map_err(|_| format!("Failed to insert key: {}", grandpa))
-		};
+        let insert_key = |key_type, public| {
+            SyncCryptoStore::insert_unknown(
+                &*keystore,
+                key_type,
+                &format!("//{}", seed),
+                public,
+            ).map_err(|_| format!("Failed to insert key: {}", grandpa))
+        };
 
 		insert_key(
 			sp_core::crypto::key_types::AURA,
@@ -167,7 +169,6 @@ fn generate_authority_keys_and_store(
 			sp_core::crypto::key_types::GRANDPA,
 			grandpa.as_slice(),
 		)?;
-
 	}
 
 	Ok(())
@@ -175,8 +176,6 @@ fn generate_authority_keys_and_store(
 
 fn print_seeds(
 	authority_seeds: &[String],
-	endowed_seeds: &[String],
-	sudo_seed: &str,
 ) {
 	let header = Style::new().bold().underline();
 	let entry = Style::new().bold();
@@ -190,25 +189,7 @@ fn print_seeds(
 		);
 	}
 
-	println!("{}", header.paint("Nominator seeds"));
-
-
 	println!();
-
-	if !endowed_seeds.is_empty() {
-		println!("{}", header.paint("Endowed seeds"));
-		for (n, seed) in endowed_seeds.iter().enumerate() {
-			println!("{} //{}",
-				entry.paint(format!("endowed-{}:", n)),
-				seed,
-			);
-		}
-
-		println!();
-	}
-
-	println!("{}", header.paint("Sudo seed"));
-	println!("//{}", sudo_seed);
 }
 
 fn main() -> Result<(), String> {
@@ -223,15 +204,13 @@ fn main() -> Result<(), String> {
 	let chain_spec_path = builder.chain_spec_path().to_path_buf();
 
 	let (authority_seeds, endowed_accounts, sudo_account) = match builder {
-		ChainSpecBuilder::Generate { authorities,  endowed, keystore_path, .. } => {
+		ChainSpecBuilder::Generate { authorities, endowed_accounts, keystore_path, sudo_account, .. } => {
 			let authorities = authorities.max(1);
 			let rand_str = || -> String { OsRng.sample_iter(&Alphanumeric).take(32).collect() };
 
 			let authority_seeds = (0..authorities).map(|_| rand_str()).collect::<Vec<_>>();
-			let endowed_seeds = (0..endowed).map(|_| rand_str()).collect::<Vec<_>>();
-			let sudo_seed = rand_str();
 
-			print_seeds(&authority_seeds, &endowed_seeds, &sudo_seed);
+			print_seeds(&authority_seeds/*, &endowed_seeds, &sudo_seed*/);
 
 			if let Some(keystore_path) = keystore_path {
 				generate_authority_keys_and_store(
@@ -240,15 +219,6 @@ fn main() -> Result<(), String> {
 				)?;
 			}
 
-			let endowed_accounts = endowed_seeds
-				.into_iter()
-				.map(|seed| {
-					chain_spec::get_account_id_from_seed::<sr25519::Public>(&seed).to_ss58check()
-				})
-				.collect();
-
-			let sudo_account =
-				chain_spec::get_account_id_from_seed::<sr25519::Public>(&sudo_seed).to_ss58check();
 
 			(authority_seeds, endowed_accounts, sudo_account)
 		}

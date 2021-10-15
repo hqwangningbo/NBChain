@@ -3,7 +3,7 @@ resolver = "2"
 
 members = [
 	"bin/nbx/node",
-	"bin/nbx/pallets/template",
+	"bin/nbx/pallets/pallet-nft",
 	"bin/nbx/runtime",
 	"bin/utils/chain-spec-builder",
 	"bin/utils/subkey",
