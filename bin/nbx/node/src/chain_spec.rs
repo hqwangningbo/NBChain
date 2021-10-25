@@ -6,7 +6,7 @@ pub use nbx_runtime::{
 use sp_consensus_aura::sr25519::AuthorityId as AuraId;
 use sp_finality_grandpa::AuthorityId as GrandpaId;
 use sp_runtime::traits::{Verify, IdentifyAccount};
-use sc_service::ChainType;
+use sc_service::{ChainType,Properties};
 
 // The URL for the telemetry server.
 // const STAGING_TELEMETRY_URL: &str = "wss://telemetry.polkadot.io/submit/";
@@ -39,6 +39,9 @@ pub fn authority_keys_from_seed(s: &str) -> (AuraId, GrandpaId) {
 }
 
 pub fn development_config() -> Result<ChainSpec, String> {
+	let mut properties = Properties::new();
+	properties.insert("tokenSymbol".into(), "NB".into());
+	properties.insert("tokenDecimals".into(), 18.into());
 
 	Ok(ChainSpec::from_genesis(
 		// Name
@@ -52,7 +55,7 @@ pub fn development_config() -> Result<ChainSpec, String> {
 				authority_keys_from_seed("Alice"),
 			],
 			// Sudo account
-			get_account_id_from_seed::<sr25519::Public>("Alice"),
+			get_account_id_from_seed::<sr25519::Public>("Bob"),
 			// Pre-funded accounts
 			vec![
 				get_account_id_from_seed::<sr25519::Public>("Alice"),
@@ -69,7 +72,7 @@ pub fn development_config() -> Result<ChainSpec, String> {
 		// Protocol ID
 		None,
 		// Properties
-		None,
+		Some(properties),
 		// Extensions
 		None,
 	))
@@ -89,7 +92,7 @@ pub fn local_testnet_config() -> Result<ChainSpec, String> {
 				authority_keys_from_seed("Bob"),
 			],
 			// Sudo account
-			get_account_id_from_seed::<sr25519::Public>("Alice"),
+			get_account_id_from_seed::<sr25519::Public>("Bob"),
 			// Pre-funded accounts
 			vec![
 				get_account_id_from_seed::<sr25519::Public>("Alice"),
@@ -135,8 +138,8 @@ pub fn nbx_genesis(
 			changes_trie_config: Default::default(),
 		},
 		pallet_balances: BalancesConfig {
-			// Configure endowed accounts with initial balance of 1 << 60.
-			balances: endowed_accounts.iter().cloned().map(|k|(k, 1 << 60)).collect(),
+			// Configure endowed accounts with initial balance of 1 << 60 1_152_921_504_606_847_000.
+			balances: endowed_accounts.iter().cloned().map(|k|(k, 8888000000000000000000)).collect(),
 		},
 		pallet_aura: AuraConfig {
 			authorities: initial_authorities.iter().map(|x| (x.0.clone())).collect(),
