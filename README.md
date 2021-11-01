@@ -1,4 +1,2 @@
 # NBChain
-
-## NBChain,为牛逼而生
-
+## NBChain 为牛逼而生
