@@ -40,6 +40,7 @@ use pallet_transaction_payment::CurrencyAdapter;
 pub use sp_runtime::BuildStorage;
 pub use sp_runtime::{Perbill, Permill};
 
+pub use pallet_kitties;
 /// Import the template pallet.
 pub use pallet_template;
 
@@ -304,7 +305,7 @@ construct_runtime!(
 		Sudo: pallet_sudo::{Pallet, Call, Config<T>, Storage, Event<T>},
 		// Include the custom logic from the pallet-template in the runtime.
 		TemplateModule: pallet_template::{Pallet, Call, Storage, Event<T>},
-		Kitties: pallet_kitties::{Pallet, Call, Storage, Event<T>},
+		Kitties: pallet_kitties::{Pallet, Call,Config<T>, Storage, Event<T>},
 	}
 );
 

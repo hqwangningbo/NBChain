@@ -1,6 +1,7 @@
+use node_template_runtime::pallet_kitties::Gender;
 use node_template_runtime::{
-	AccountId, AuraConfig, BalancesConfig, GenesisConfig, GrandpaConfig, Signature, SudoConfig,
-	SystemConfig, WASM_BINARY,
+	AccountId, AuraConfig, BalancesConfig, GenesisConfig, GrandpaConfig, KittiesConfig, Signature,
+	SudoConfig, SystemConfig, WASM_BINARY,
 };
 use sc_service::ChainType;
 use sp_consensus_aura::sr25519::AuthorityId as AuraId;
@@ -149,6 +150,20 @@ fn testnet_genesis(
 		sudo: SudoConfig {
 			// Assign network admin rights.
 			key: root_key,
+		},
+		kitties: KittiesConfig {
+			kitties: vec![
+				(
+					get_account_id_from_seed::<sr25519::Public>("Alice"),
+					[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16],
+					Gender::Female,
+				),
+				(
+					get_account_id_from_seed::<sr25519::Public>("Bob"),
+					[0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16],
+					Gender::Male,
+				),
+			],
 		},
 	}
 }
