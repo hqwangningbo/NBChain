@@ -1,5 +1,5 @@
-use node_template_runtime::pallet_kitties::Gender;
-use node_template_runtime::{
+use nbchain_runtime::pallet_kitties::Gender;
+pub use nbchain_runtime::{
 	AccountId, AuraConfig, BalancesConfig, GenesisConfig, GrandpaConfig, KittiesConfig, Signature,
 	SudoConfig, SystemConfig, WASM_BINARY,
 };
@@ -39,7 +39,6 @@ pub fn authority_keys_from_seed(s: &str) -> (AuraId, GrandpaId) {
 
 pub fn development_config() -> Result<ChainSpec, String> {
 	let wasm_binary = WASM_BINARY.ok_or_else(|| "Development wasm not available".to_string())?;
-
 	Ok(ChainSpec::from_genesis(
 		// Name
 		"Development",
@@ -47,7 +46,7 @@ pub fn development_config() -> Result<ChainSpec, String> {
 		"dev",
 		ChainType::Development,
 		move || {
-			testnet_genesis(
+			nb_genesis(
 				wasm_binary,
 				// Initial PoA authorities
 				vec![authority_keys_from_seed("Alice")],
@@ -86,7 +85,7 @@ pub fn local_testnet_config() -> Result<ChainSpec, String> {
 		"local_testnet",
 		ChainType::Local,
 		move || {
-			testnet_genesis(
+			nb_genesis(
 				wasm_binary,
 				// Initial PoA authorities
 				vec![authority_keys_from_seed("Alice"), authority_keys_from_seed("Bob")],
@@ -124,7 +123,7 @@ pub fn local_testnet_config() -> Result<ChainSpec, String> {
 }
 
 /// Configure initial storage state for FRAME modules.
-fn testnet_genesis(
+fn nb_genesis(
 	wasm_binary: &[u8],
 	initial_authorities: Vec<(AuraId, GrandpaId)>,
 	root_key: AccountId,
