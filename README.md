@@ -1,5 +1,5 @@
 # NBChain
-## NBChain 为牛逼而生
+## NBChain 为变牛逼而生
 
 - [x] kitties
 - [x] nicks
