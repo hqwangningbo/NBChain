@@ -44,6 +44,8 @@ pub use pallet_kitties;
 /// Import the template pallet.
 pub use pallet_template;
 
+pub use ethereum_chain_id;
+
 /// An index to a block.
 pub type BlockNumber = u32;
 
@@ -323,6 +325,8 @@ impl pallet_nicks::Config for Runtime {
 	type Event = Event;
 }
 
+impl ethereum_chain_id::Config for Runtime {}
+
 // Create the runtime by composing the FRAME pallets that were previously configured.
 construct_runtime!(
 	pub enum Runtime where
@@ -342,6 +346,7 @@ construct_runtime!(
 		TemplateModule: pallet_template::{Pallet, Call, Storage, Event<T>},
 		Kitties: pallet_kitties::{Pallet, Call,Config<T>, Storage, Event<T>},
 		Nicks: pallet_nicks::{Pallet, Call, Storage, Event<T>},
+		EthereumChainId: ethereum_chain_id::{Pallet, Config, Storage},
 	}
 );
 

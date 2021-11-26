@@ -1,7 +1,7 @@
 use nbchain_runtime::pallet_kitties::Gender;
 pub use nbchain_runtime::{
 	AccountId, AuraConfig, BalancesConfig, GenesisConfig, GrandpaConfig, KittiesConfig, Signature,
-	SudoConfig, SystemConfig, WASM_BINARY,
+	SudoConfig, SystemConfig, WASM_BINARY,EthereumChainIdConfig
 };
 use sc_service::{ChainType,Properties};
 use sp_consensus_aura::sr25519::AuthorityId as AuraId;
@@ -152,6 +152,9 @@ fn nb_genesis(
 		sudo: SudoConfig {
 			// Assign network admin rights.
 			key: root_key,
+		},
+		ethereum_chain_id: EthereumChainIdConfig {
+			chain_id: 1500u64
 		},
 		kitties: KittiesConfig {
 			kitties: vec![

@@ -1332,6 +1332,17 @@ dependencies = [
 ]
 
 [[package]]
+name = "ethereum-chain-id"
+version = "3.0.0-monthly-2021-10"
+dependencies = [
+ "frame-support",
+ "frame-system",
+ "parity-scale-codec",
+ "scale-info",
+ "serde",
+]
+
+[[package]]
 name = "event-listener"
 version = "2.5.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -3531,6 +3542,7 @@ dependencies = [
 name = "nbchain-runtime"
 version = "3.0.0-monthly-2021-10"
 dependencies = [
+ "ethereum-chain-id",
  "frame-benchmarking",
  "frame-executive",
  "frame-support",

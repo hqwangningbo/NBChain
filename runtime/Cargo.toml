@@ -17,6 +17,11 @@ default-features = false
 path = '../pallets/template'
 version = '3.0.0-monthly-2021-10'
 
+[dependencies.ethereum-chain-id]
+default-features = false
+path = '../pallets/ethereum-chain-id'
+version = '3.0.0-monthly-2021-10'
+
 [dependencies.pallet-kitties]
 default-features = false
 path = '../pallets/pallet-kitties'
@@ -228,6 +233,7 @@ std = [
     'pallet-sudo/std',
     'pallet-template/std',
     'pallet-kitties/std',
+    'ethereum-chain-id/std',
     'pallet-timestamp/std',
     'pallet-transaction-payment-rpc-runtime-api/std',
     'pallet-transaction-payment/std',
