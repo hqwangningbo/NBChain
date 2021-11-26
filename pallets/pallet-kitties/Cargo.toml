@@ -10,69 +10,20 @@ license = 'Unlicense'
 [package.metadata.docs.rs]
 targets = ['x86_64-unknown-linux-gnu']
 
-[dependencies.codec]
-default-features = false
-features = ['derive']
-package = 'parity-scale-codec'
-version = '2.0.0'
+[dependencies]
+codec = { package = "parity-scale-codec", version = "2.3.1", default-features = false, features = ["derive"] }
+scale-info = { version = "1.0.0", default-features = false, features = ["derive"] }
+log = {default-features = false,version = '0.4.14'}
+serde = { version = "1.0.119", optional = true,features = ["derive"] }
 
-[dependencies.frame-benchmarking]
-default-features = false
-git = 'https://github.com/paritytech/substrate.git'
-optional = true
-tag = 'monthly-2021-10'
-version = '4.0.0-dev'
+frame-support = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "polkadot-v0.9.11" }
+frame-system = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "polkadot-v0.9.11" }
+frame-benchmarking = { git = 'https://github.com/paritytech/substrate', branch = "polkadot-v0.9.11", default-features = false, optional = true }
 
-[dependencies.frame-support]
-default-features = false
-git = 'https://github.com/paritytech/substrate.git'
-tag = 'monthly-2021-10'
-version = '4.0.0-dev'
-
-[dependencies.frame-system]
-default-features = false
-git = 'https://github.com/paritytech/substrate.git'
-tag = 'monthly-2021-10'
-version = '4.0.0-dev'
-
-[dependencies.sp-io]
-default-features = false
-git = 'https://github.com/paritytech/substrate.git'
-tag = 'monthly-2021-10'
-version = '4.0.0-dev'
-
-[dependencies.scale-info]
-default-features = false
-features = ['derive']
-version = '1.0'
-
-[dependencies.serde]
-default-features = false
-version = '1.0.119'
-
-[dependencies.log]
-default-features = false
-version = '0.4.14'
-
-
-[dev-dependencies.sp-core]
-default-features = false
-git = 'https://github.com/paritytech/substrate.git'
-tag = 'monthly-2021-10'
-version = '4.0.0-dev'
-
-[dev-dependencies.sp-io]
-default-features = false
-git = 'https://github.com/paritytech/substrate.git'
-tag = 'monthly-2021-10'
-version = '4.0.0-dev'
-
-[dev-dependencies.sp-runtime]
-default-features = false
-git = 'https://github.com/paritytech/substrate.git'
-tag = 'monthly-2021-10'
-version = '4.0.0-dev'
-
+sp-version = { git = 'https://github.com/paritytech/substrate', branch = "polkadot-v0.9.11", default-features = false }
+sp-core = { git = 'https://github.com/paritytech/substrate', branch = "polkadot-v0.9.11", default-features = false }
+sp-runtime = { git = 'https://github.com/paritytech/substrate', branch = "polkadot-v0.9.11", default-features = false }
+sp-io = { git = 'https://github.com/paritytech/substrate', branch = "polkadot-v0.9.11", default-features = false }
 
 
 [features]
@@ -81,6 +32,7 @@ runtime-benchmarks = ['frame-benchmarking']
 std = [
     'codec/std',
     'scale-info/std',
+    'serde/std',
     'frame-support/std',
     'frame-system/std',
     'frame-benchmarking/std',

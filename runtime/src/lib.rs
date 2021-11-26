@@ -12,12 +12,10 @@ use pallet_grandpa::{
 use sp_api::impl_runtime_apis;
 use sp_consensus_aura::sr25519::AuthorityId as AuraId;
 use sp_core::{crypto::KeyTypeId, OpaqueMetadata};
-use sp_runtime::{
-	create_runtime_str, generic, impl_opaque_keys,
-	traits::{AccountIdLookup, BlakeTwo256, Block as BlockT, IdentifyAccount, NumberFor, Verify},
-	transaction_validity::{TransactionSource, TransactionValidity},
-	ApplyExtrinsicResult, MultiSignature,
-};
+use sp_runtime::{create_runtime_str, generic, impl_opaque_keys,
+				 traits::{AccountIdLookup, BlakeTwo256, Block as BlockT, IdentifyAccount, NumberFor, Verify},
+				 transaction_validity::{TransactionSource, TransactionValidity},
+				 ApplyExtrinsicResult, MultiSignature, Perquintill, FixedU128, FixedPointNumber};
 use sp_std::prelude::*;
 #[cfg(feature = "std")]
 use sp_version::NativeVersion;
@@ -29,16 +27,18 @@ pub use frame_support::{
 	traits::{KeyOwnerProofSystem, Randomness, StorageInfo},
 	weights::{
 		constants::{BlockExecutionWeight, ExtrinsicBaseWeight, RocksDbWeight, WEIGHT_PER_SECOND},
-		IdentityFee, Weight,
+		WeightToFeePolynomial, Weight, WeightToFeeCoefficients, WeightToFeeCoefficient,
 	},
 	StorageValue,
 };
+use frame_support::weights::IdentityFee;
 pub use pallet_balances::Call as BalancesCall;
 pub use pallet_timestamp::Call as TimestampCall;
-use pallet_transaction_payment::CurrencyAdapter;
+use pallet_transaction_payment::{CurrencyAdapter, Multiplier, MultiplierUpdate};
 #[cfg(any(feature = "std", test))]
 pub use sp_runtime::BuildStorage;
 pub use sp_runtime::{Perbill, Permill};
+use sp_runtime::traits::Convert;
 
 pub use pallet_kitties;
 /// Import the template pallet.
@@ -261,11 +261,13 @@ impl pallet_balances::Config for Runtime {
 
 parameter_types! {
 	pub const TransactionByteFee: Balance = 1;
+	pub OperationalFeeMultiplier: u8 = 5;
 }
 
 impl pallet_transaction_payment::Config for Runtime {
 	type OnChargeTransaction = CurrencyAdapter<Balances, ()>;
 	type TransactionByteFee = TransactionByteFee;
+	type OperationalFeeMultiplier = OperationalFeeMultiplier;
 	type WeightToFee = IdentityFee<Balance>;
 	type FeeMultiplierUpdate = ();
 }
