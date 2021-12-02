@@ -31,14 +31,16 @@ pub use frame_support::{
 	},
 	StorageValue,
 };
+use frame_support::traits::Get;
 use frame_support::weights::IdentityFee;
 pub use pallet_balances::Call as BalancesCall;
 pub use pallet_timestamp::Call as TimestampCall;
 use pallet_transaction_payment::{CurrencyAdapter, Multiplier, MultiplierUpdate};
+use smallvec::smallvec;
 #[cfg(any(feature = "std", test))]
 pub use sp_runtime::BuildStorage;
 pub use sp_runtime::{Perbill, Permill};
-use sp_runtime::traits::Convert;
+use sp_runtime::traits::{Convert, ConvertInto};
 
 pub use pallet_kitties;
 /// Import the template pallet.
@@ -260,15 +262,38 @@ impl pallet_balances::Config for Runtime {
 }
 
 parameter_types! {
+	pub const FeeWeightRatio: u128 = 1_000;
 	pub const TransactionByteFee: Balance = 1;
 	pub OperationalFeeMultiplier: u8 = 5;
+}
+
+pub struct LinearWeightToFee<C>(sp_std::marker::PhantomData<C>);
+
+impl<C> WeightToFeePolynomial for LinearWeightToFee<C>
+	where
+		C: Get<Balance>,
+{
+	type Balance = Balance;
+
+	fn polynomial() -> WeightToFeeCoefficients<Self::Balance> {
+		let coefficient = WeightToFeeCoefficient {
+			coeff_integer: 0,
+			// coeff_frac: Perbill::zero(),
+			coeff_frac: Perbill::from_rational(935u64, 1000u64),
+			negative: false,
+			degree: 1,
+		};
+
+		smallvec!(coefficient)
+	}
 }
 
 impl pallet_transaction_payment::Config for Runtime {
 	type OnChargeTransaction = CurrencyAdapter<Balances, ()>;
 	type TransactionByteFee = TransactionByteFee;
 	type OperationalFeeMultiplier = OperationalFeeMultiplier;
-	type WeightToFee = IdentityFee<Balance>;
+	// type WeightToFee = IdentityFee<Balance>;
+	type WeightToFee = LinearWeightToFee<FeeWeightRatio>;
 	type FeeMultiplierUpdate = ();
 }
 
@@ -329,6 +354,17 @@ impl pallet_nicks::Config for Runtime {
 
 impl ethereum_chain_id::Config for Runtime {}
 
+impl pallet_vesting::Config for Runtime {
+	type Event = Event;
+	type Currency = Balances;
+	type BlockNumberToBalance = ConvertInto;
+	type MinVestedTransfer = ExistentialDeposit;
+	type WeightInfo = ();
+	// `VestingInfo` encode length is 36bytes. 28 schedules gets encoded as 1009 bytes, which is the
+	// highest number of schedules that encodes less than 2^10.
+	const MAX_VESTING_SCHEDULES: u32 = 28;
+}
+
 // Create the runtime by composing the FRAME pallets that were previously configured.
 construct_runtime!(
 	pub enum Runtime where
@@ -349,6 +385,7 @@ construct_runtime!(
 		Kitties: pallet_kitties::{Pallet, Call,Config<T>, Storage, Event<T>},
 		Nicks: pallet_nicks::{Pallet, Call, Storage, Event<T>},
 		EthereumChainId: ethereum_chain_id::{Pallet, Config, Storage},
+		Vesting: pallet_vesting::{Pallet, Call, Storage, Event<T>, Config<T>},
 	}
 );
 
