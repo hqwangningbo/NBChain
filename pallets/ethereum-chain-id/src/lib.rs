@@ -7,8 +7,7 @@ pub mod pallet {
 	use frame_system::pallet_prelude::*;
 
 	#[pallet::config]
-	pub trait Config: frame_system::Config {
-	}
+	pub trait Config: frame_system::Config {}
 
 	#[pallet::pallet]
 	#[pallet::generate_store(pub(super) trait Store)]
@@ -16,7 +15,7 @@ pub mod pallet {
 
 	#[pallet::storage]
 	#[pallet::getter(fn chain_id)]
-	pub type ChainId<T> = StorageValue<_, u64,ValueQuery>;
+	pub type ChainId<T> = StorageValue<_, u64, ValueQuery>;
 
 	//小心这个没有范形
 	#[pallet::genesis_config]
@@ -27,9 +26,7 @@ pub mod pallet {
 	#[cfg(feature = "std")]
 	impl Default for GenesisConfig {
 		fn default() -> Self {
-			Self {
-				chain_id: 1500u64
-			}
+			Self { chain_id: 1500u64 }
 		}
 	}
 
