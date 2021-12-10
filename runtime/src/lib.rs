@@ -387,7 +387,6 @@ pub const WEIGHT_PER_GAS: u64 = WEIGHT_PER_SECOND / GAS_PER_SECOND;
 pub const MAXIMUM_BLOCK_WEIGHT: Weight = WEIGHT_PER_SECOND / 2;
 
 parameter_types! {
-	pub const ChainId: u64 = 105;
 	pub BlockGasLimit: U256
 		= U256::from(NORMAL_DISPATCH_RATIO * MAXIMUM_BLOCK_WEIGHT / WEIGHT_PER_GAS);
 }
@@ -421,7 +420,7 @@ impl pallet_evm::Config for Runtime {
     type Event = Event;
     type Runner = pallet_evm::runner::stack::Runner<Self>;
     type Precompiles = ();
-    type ChainId = ChainId;
+    type ChainId = EthereumChainId;
     type OnChargeTransaction = ();
     type BlockGasLimit = BlockGasLimit;
     type FindAuthor = ();
@@ -454,7 +453,7 @@ construct_runtime!(
 		Nicks: pallet_nicks::{Pallet, Call, Storage, Event<T>},
 		EthereumChainId: ethereum_chain_id::{Pallet, Config, Storage},
 		Vesting: pallet_vesting::{Pallet, Call, Storage, Event<T>, Config<T>},
-	   Evm: pallet_evm::{Pallet, Config, Call, Storage, Event<T>},
+	    Evm: pallet_evm::{Pallet, Config, Call, Storage, Event<T>},
 		Ethereum: pallet_ethereum::{Pallet, Call, Storage, Event, Config, Origin},
 	}
 );
