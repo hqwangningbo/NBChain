@@ -26,6 +26,7 @@ use sp_version::RuntimeVersion;
 // A few exports that help ease life for downstream crates.
 use frame_support::traits::Get;
 pub use frame_support::{
+    inherent::Vec,
     construct_runtime, parameter_types,
     traits::{KeyOwnerProofSystem, Randomness, StorageInfo},
     weights::{
@@ -48,6 +49,8 @@ pub use pallet_kitties;
 pub use pallet_template;
 
 pub use ethereum_chain_id;
+
+pub use pallet_erc20;
 
 // evm
 use pallet_ethereum;
@@ -315,6 +318,10 @@ impl pallet_sudo::Config for Runtime {
 impl pallet_template::Config for Runtime {
     type Event = Event;
 }
+
+impl pallet_erc20::Config for Runtime {
+    type Event = Event;
+}
 parameter_types! {
 // One can own at most 9,999 Kitties
 pub const MaxKittyOwned: u32 = 9999;
@@ -455,6 +462,7 @@ construct_runtime!(
 		Vesting: pallet_vesting::{Pallet, Call, Storage, Event<T>, Config<T>},
 	    Evm: pallet_evm::{Pallet, Config, Call, Storage, Event<T>},
 		Ethereum: pallet_ethereum::{Pallet, Call, Storage, Event, Config, Origin},
+		ERC20: pallet_erc20::{Pallet, Call, Storage,Config, Event<T>},
 	}
 );
 

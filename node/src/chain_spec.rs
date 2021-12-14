@@ -2,7 +2,7 @@ use nbchain_runtime::pallet_kitties::Gender;
 pub use nbchain_runtime::{
     AccountId, AuraConfig, BalancesConfig, EthereumChainIdConfig, EthereumConfig, EvmConfig,
     GenesisAccount, GenesisConfig, GrandpaConfig, KittiesConfig, Signature, SudoConfig,
-    SystemConfig, VestingConfig, WASM_BINARY,
+    SystemConfig, VestingConfig, WASM_BINARY, ERC20Config,
 };
 use sc_service::{ChainType, Properties};
 use sp_consensus_aura::sr25519::AuthorityId as AuraId;
@@ -227,5 +227,10 @@ fn nb_genesis(
                 .collect(),
         },
         ethereum: EthereumConfig {},
+        erc20: ERC20Config {
+            name: String::from("NB Token").into_bytes(),
+            symbol: String::from("NB").into_bytes(),
+            decimal: 18,
+        },
     }
 }

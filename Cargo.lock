@@ -3746,6 +3746,7 @@ dependencies = [
  "hex-literal",
  "pallet-aura",
  "pallet-balances",
+ "pallet-erc20",
  "pallet-ethereum",
  "pallet-evm",
  "pallet-evm-precompile-modexp",
@@ -4022,6 +4023,17 @@ dependencies = [
  "scale-info",
  "sp-runtime",
  "sp-std",
+]
+
+[[package]]
+name = "pallet-erc20"
+version = "3.0.0-monthly-2021-10"
+dependencies = [
+ "frame-support",
+ "frame-system",
+ "parity-scale-codec",
+ "scale-info",
+ "serde",
 ]
 
 [[package]]
