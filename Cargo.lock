@@ -4031,9 +4031,14 @@ version = "3.0.0-monthly-2021-10"
 dependencies = [
  "frame-support",
  "frame-system",
+ "pallet-balances",
+ "pallet-randomness-collective-flip",
  "parity-scale-codec",
  "scale-info",
  "serde",
+ "sp-core",
+ "sp-io",
+ "sp-runtime",
 ]
 
 [[package]]

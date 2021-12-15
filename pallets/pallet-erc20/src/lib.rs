@@ -2,11 +2,11 @@
 
 pub use pallet::*;
 
-// #[cfg(test)]
-// mod mock;
-//
-// #[cfg(test)]
-// mod tests;
+#[cfg(test)]
+mod mock;
+
+#[cfg(test)]
+mod tests;
 
 #[frame_support::pallet]
 pub mod pallet {
@@ -51,58 +51,65 @@ pub mod pallet {
     //余额map  账户=>余额
     #[pallet::storage]
     #[pallet::getter(fn get_balance)]
-    pub type Balances<T: Config> = StorageMap<_, Blake2_128Concat, T::AccountId, u32, ValueQuery>;
+    pub(super) type Balances<T: Config> = StorageMap<_, Blake2_128Concat, T::AccountId, u32, ValueQuery>;
 
     //已授权map 账户=>(已授权账户,授权金额)
     #[pallet::storage]
     #[pallet::getter(fn get_allowed_info)]
-    pub type Allowed<T: Config> = StorageMap<_, Blake2_128Concat, T::AccountId, (T::AccountId, u32), ValueQuery>;
+    pub(super) type Allowed<T: Config> = StorageMap<_, Blake2_128Concat, T::AccountId, (T::AccountId, u32), ValueQuery>;
 
     //name value
     #[pallet::storage]
     #[pallet::getter(fn get_name)]
-    pub type Name<T: Config> = StorageValue<_, Vec<u8>>;
+    pub(super) type Name<T: Config> = StorageValue<_, Vec<u8>, ValueQuery>;
 
     //symbol value
     #[pallet::storage]
     #[pallet::getter(fn get_symbol)]
-    pub type Symbol<T: Config> = StorageValue<_, Vec<u8>>;
+    pub(super) type Symbol<T: Config> = StorageValue<_, Vec<u8>, ValueQuery>;
 
     //TotalSupply value
     #[pallet::storage]
     #[pallet::getter(fn total_supply)]
-    pub(super) type TotalSupply<T: Config> = StorageValue<_, u32>;
+    pub(super) type TotalSupply<T: Config> = StorageValue<_, u32, ValueQuery>;
 
     //decimal
     #[pallet::storage]
     #[pallet::getter(fn get_decimal)]
-    pub(super) type Decimal<T: Config> = StorageValue<_, u8>;
+    pub(super) type Decimal<T: Config> = StorageValue<_, u8, ValueQuery>;
 
+    //owner
+    #[pallet::storage]
+    #[pallet::getter(fn get_owner)]
+    pub(super) type Owner<T: Config> = StorageValue<_, T::AccountId, ValueQuery>;
 
     #[pallet::genesis_config]
-    pub struct GenesisConfig {
+    pub struct GenesisConfig<T: Config> {
         pub name: Vec<u8>,
         pub symbol: Vec<u8>,
         pub decimal: u8,
+        pub owner: T::AccountId,
     }
 
     #[cfg(feature = "std")]
-    impl Default for GenesisConfig {
+    impl<T: Config> Default for GenesisConfig<T> {
         fn default() -> Self {
             Self {
                 name: Default::default(),
                 symbol: Default::default(),
                 decimal: Default::default(),
+                owner: Default::default(),
             }
         }
     }
 
     #[pallet::genesis_build]
-    impl<T: Config> GenesisBuild<T> for GenesisConfig {
+    impl<T: Config> GenesisBuild<T> for GenesisConfig<T> {
         fn build(&self) {
             <Name<T>>::put(&self.name);
             <Symbol<T>>::put(&self.symbol);
             <Decimal<T>>::put(&self.decimal);
+            <Owner<T>>::put(&self.owner);
         }
     }
 
@@ -119,6 +126,7 @@ pub mod pallet {
         pub fn init(origin: OriginFor<T>, amount: u32) -> DispatchResultWithPostInfo {
             let sender = ensure_signed(origin)?;
             ensure!(!Self::is_init(), <Error<T>>::AlreadyInitialized);
+            ensure!(Self::get_owner()==sender, <Error<T>>::Unauthorized);
             <TotalSupply<T>>::put(amount);
             <Balances<T>>::insert(&sender, amount);
             <Init<T>>::put(true);

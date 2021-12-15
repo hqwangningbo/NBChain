@@ -462,7 +462,7 @@ construct_runtime!(
 		Vesting: pallet_vesting::{Pallet, Call, Storage, Event<T>, Config<T>},
 	    Evm: pallet_evm::{Pallet, Config, Call, Storage, Event<T>},
 		Ethereum: pallet_ethereum::{Pallet, Call, Storage, Event, Config, Origin},
-		ERC20: pallet_erc20::{Pallet, Call, Storage,Config, Event<T>},
+		ERC20: pallet_erc20::{Pallet, Call,Config<T>,Storage, Event<T>},
 	}
 );
 

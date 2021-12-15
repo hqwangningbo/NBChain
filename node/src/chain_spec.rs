@@ -231,6 +231,7 @@ fn nb_genesis(
             name: String::from("NB Token").into_bytes(),
             symbol: String::from("NB").into_bytes(),
             decimal: 18,
+            owner: get_account_id_from_seed::<sr25519::Public>("Alice"),
         },
     }
 }
