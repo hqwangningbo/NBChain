@@ -1,11 +1,10 @@
 [package]
 name = 'pallet-kitties'
-version = '3.0.0-monthly-2021-10'
+version = '1.0.0'
 description = 'small kitties'
 authors = ['wangningbo']
 edition = '2018'
-license = 'Unlicense'
-
+repository = 'https://github.com/hqwangningbo/nbchain/'
 
 [package.metadata.docs.rs]
 targets = ['x86_64-unknown-linux-gnu']

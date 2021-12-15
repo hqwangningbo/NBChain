@@ -1,14 +1,10 @@
 [package]
 name = 'nbchain'
-version = '3.0.0-monthly-2021-10'
-description = 'A fresh FRAME-based Substrate node, ready for hacking.'
-authors = ['Substrate DevHub <https://github.com/substrate-developer-hub>']
-homepage = 'https://substrate.io/'
+version = '1.0.0'
+description = 'nbchain'
+authors = ['wangningbo']
 edition = '2018'
-license = 'Unlicense'
-publish = false
-repository = 'https://github.com/substrate-developer-hub/substrate-node-template/'
-build = 'build.rs'
+repository = 'https://github.com/hqwangningbo/nbchain/'
 
 [[bin]]
 name = 'nbchain'
@@ -64,7 +60,7 @@ frame-benchmarking-cli = { git = 'https://github.com/paritytech/substrate', bran
 #pallet-threshold-signature-rpc = { version = "3.0.0", path = "../pallets/threshold-signature/rpc"}
 #pallet-coming-auction-rpc = { path = "../pallets/pallet-coming-auction/rpc" }
 
-nbchain-runtime = { version = "3.0.0-monthly-2021-10", path = "../runtime" }
+nbchain-runtime = { version = "1.0.0", path = "../runtime" }
 
 # EVM
 #futures = { version = "0.3", features = ["compat"] }

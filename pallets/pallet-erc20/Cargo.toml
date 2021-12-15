@@ -1,9 +1,10 @@
 [package]
-authors = ['Minix Chain Developer']
-edition = '2018'
 name = 'pallet-erc20'
-version = "3.0.0-monthly-2021-10"
-license = "Unlicense"
+version = "1.0.0"
+description = 'erc20'
+authors = ['wangningbo']
+edition = '2018'
+repository = 'https://github.com/hqwangningbo/nbchain/'
 
 [package.metadata.docs.rs]
 targets = ["x86_64-unknown-linux-gnu"]
