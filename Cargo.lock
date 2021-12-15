@@ -3698,6 +3698,7 @@ dependencies = [
  "hex-literal",
  "jsonrpc-core",
  "nbchain-runtime",
+ "pallet-erc20-rpc",
  "pallet-ethereum",
  "pallet-transaction-payment-rpc",
  "sc-basic-authorship",
@@ -3747,6 +3748,7 @@ dependencies = [
  "pallet-aura",
  "pallet-balances",
  "pallet-erc20",
+ "pallet-erc20-rpc-runtime-api",
  "pallet-ethereum",
  "pallet-evm",
  "pallet-evm-precompile-modexp",
@@ -4039,6 +4041,33 @@ dependencies = [
  "sp-core",
  "sp-io",
  "sp-runtime",
+]
+
+[[package]]
+name = "pallet-erc20-rpc"
+version = "1.0.0"
+dependencies = [
+ "jsonrpc-core",
+ "jsonrpc-core-client",
+ "jsonrpc-derive",
+ "pallet-erc20-rpc-runtime-api",
+ "parity-scale-codec",
+ "sp-api",
+ "sp-blockchain",
+ "sp-core",
+ "sp-rpc",
+ "sp-runtime",
+]
+
+[[package]]
+name = "pallet-erc20-rpc-runtime-api"
+version = "1.0.0"
+dependencies = [
+ "pallet-erc20",
+ "parity-scale-codec",
+ "sp-api",
+ "sp-core",
+ "sp-std",
 ]
 
 [[package]]

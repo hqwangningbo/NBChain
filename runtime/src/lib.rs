@@ -51,6 +51,7 @@ pub use pallet_template;
 pub use ethereum_chain_id;
 
 pub use pallet_erc20;
+use pallet_erc20::ERC20Info;
 
 // evm
 use pallet_ethereum;
@@ -623,6 +624,11 @@ impl_runtime_apis! {
 			TransactionPayment::query_fee_details(uxt, len)
 		}
 	}
+     impl pallet_erc20_rpc_runtime_api::ERC20Api<Block, AccountId> for Runtime {
+        fn get_erc20_info(owner: AccountId) -> Option<ERC20Info<AccountId>> {
+            ERC20::get_erc20_info()
+        }
+    }
 
 	#[cfg(feature = "runtime-benchmarks")]
 	impl frame_benchmarking::Benchmark<Block> for Runtime {

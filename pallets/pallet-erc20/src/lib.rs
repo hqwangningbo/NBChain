@@ -1,6 +1,11 @@
 #![cfg_attr(not(feature = "std"), no_std)]
 
 pub use pallet::*;
+use codec::{Decode, Encode};
+use frame_support::inherent::Vec;
+
+#[cfg(feature = "std")]
+use serde::{Deserialize, Serialize};
 
 #[cfg(test)]
 mod mock;
@@ -8,10 +13,21 @@ mod mock;
 #[cfg(test)]
 mod tests;
 
+#[derive(Clone, Eq, PartialEq, Encode, Decode, scale_info::TypeInfo)]
+#[cfg_attr(feature = "std", derive(Debug, Serialize, Deserialize))]
+#[cfg_attr(feature = "std", serde(rename_all = "camelCase"))]
+pub struct ERC20Info<AccountId> {
+    pub name: Vec<u8>,
+    pub symbol: Vec<u8>,
+    pub decimal: u8,
+    pub owner: AccountId,
+}
+
 #[frame_support::pallet]
 pub mod pallet {
     use frame_support::{dispatch::DispatchResultWithPostInfo, pallet_prelude::*, inherent::Vec};
     use frame_system::pallet_prelude::*;
+    use crate::ERC20Info;
 
     #[pallet::config]
     pub trait Config: frame_system::Config {
@@ -179,6 +195,18 @@ pub mod pallet {
             let recipient_balance = Self::get_balance(recipient);
             <Balances<T>>::insert(sender, sender_balance - amount);
             <Balances<T>>::insert(recipient, recipient_balance + amount);
+        }
+        pub fn get_erc20_info() -> Option<ERC20Info<T::AccountId>> {
+            let name = <Name<T>>::get();
+            let symbol = <Symbol<T>>::get();
+            let decimal = <Decimal<T>>::get();
+            let owner = <Owner<T>>::get();
+            Some(ERC20Info {
+                name: name.clone(),
+                symbol: symbol.clone(),
+                decimal: decimal.clone(),
+                owner: owner.clone(),
+            })
         }
     }
 }

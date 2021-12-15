@@ -1,0 +1,27 @@
+[package]
+name = 'pallet-erc20-rpc-runtime-api'
+version = "1.0.0"
+description = 'rpc-runtime-api'
+authors = ['wangningbo']
+edition = '2018'
+repository = 'https://github.com/hqwangningbo/nbchain/'
+
+[package.metadata.docs.rs]
+targets = ["x86_64-unknown-linux-gnu"]
+
+[dependencies]
+sp-api = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "polkadot-v0.9.11" }
+sp-std = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "polkadot-v0.9.11" }
+sp-core = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "polkadot-v0.9.11" }
+codec = { package = "parity-scale-codec", version = "2.3.1", default-features = false, features = ["derive"] }
+pallet-erc20 = { version = "1.0.0", default-features = false, path = "../../../pallet-erc20" }
+
+[features]
+default = ["std"]
+std = [
+    "sp-api/std",
+    "sp-std/std",
+    "sp-core/std",
+    "codec/std",
+    "pallet-erc20/std",
+]
