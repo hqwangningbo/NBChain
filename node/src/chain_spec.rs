@@ -1,8 +1,8 @@
 use nbchain_runtime::pallet_kitties::Gender;
 pub use nbchain_runtime::{
-    AccountId, AuraConfig, BalancesConfig, EthereumChainIdConfig, EthereumConfig, EvmConfig,
-    GenesisAccount, GenesisConfig, GrandpaConfig, KittiesConfig, Signature, SudoConfig,
-    SystemConfig, VestingConfig, WASM_BINARY, ERC20Config,
+	AccountId, AuraConfig, BalancesConfig, ERC20Config, EthereumChainIdConfig, EthereumConfig,
+	EvmConfig, GenesisAccount, GenesisConfig, GrandpaConfig, KittiesConfig, Signature, SudoConfig,
+	SystemConfig, VestingConfig, WASM_BINARY,
 };
 use sc_service::{ChainType, Properties};
 use sp_consensus_aura::sr25519::AuthorityId as AuraId;
@@ -18,220 +18,220 @@ pub type ChainSpec = sc_service::GenericChainSpec<GenesisConfig>;
 
 /// Generate a crypto pair from seed.
 pub fn get_from_seed<TPublic: Public>(seed: &str) -> <TPublic::Pair as Pair>::Public {
-    TPublic::Pair::from_string(&format!("//{}", seed), None)
-        .expect("static values are valid; qed")
-        .public()
+	TPublic::Pair::from_string(&format!("//{}", seed), None)
+		.expect("static values are valid; qed")
+		.public()
 }
 
 type AccountPublic = <Signature as Verify>::Signer;
 
 /// Generate an account ID from seed.
 pub fn get_account_id_from_seed<TPublic: Public>(seed: &str) -> AccountId
-    where
-        AccountPublic: From<<TPublic::Pair as Pair>::Public>,
+where
+	AccountPublic: From<<TPublic::Pair as Pair>::Public>,
 {
-    AccountPublic::from(get_from_seed::<TPublic>(seed)).into_account()
+	AccountPublic::from(get_from_seed::<TPublic>(seed)).into_account()
 }
 
 /// Generate an Aura authority key.
 pub fn authority_keys_from_seed(s: &str) -> (AuraId, GrandpaId) {
-    (get_from_seed::<AuraId>(s), get_from_seed::<GrandpaId>(s))
+	(get_from_seed::<AuraId>(s), get_from_seed::<GrandpaId>(s))
 }
 
 pub fn development_config() -> Result<ChainSpec, String> {
-    let mut properties = Properties::new();
-    properties.insert("tokenSymbol".into(), "NB".into());
-    properties.insert("tokenDecimals".into(), 18.into());
-    let wasm_binary = WASM_BINARY.ok_or_else(|| "Development wasm not available".to_string())?;
-    Ok(ChainSpec::from_genesis(
-        // Name
-        "Development",
-        // ID
-        "dev",
-        ChainType::Development,
-        move || {
-            nb_genesis(
-                wasm_binary,
-                // Initial PoA authorities
-                vec![authority_keys_from_seed("Alice")],
-                // Sudo account
-                get_account_id_from_seed::<sr25519::Public>("Alice"),
-                // Pre-funded accounts
-                vec![
-                    get_account_id_from_seed::<sr25519::Public>("Alice"),
-                    get_account_id_from_seed::<sr25519::Public>("Bob"),
-                    get_account_id_from_seed::<sr25519::Public>("Alice//stash"),
-                    get_account_id_from_seed::<sr25519::Public>("Bob//stash"),
-                ],
-                true,
-                vec![
-                    // Alith
-                    H160::from(hex_literal::hex!["f24FF3a9CF04c71Dbc94D0b566f7A27B94566cac"]),
-                    // Baltathar
-                    H160::from(hex_literal::hex!["3Cd0A705a2DC65e5b1E1205896BaA2be8A07c6e0"]),
-                    // Charleth
-                    H160::from(hex_literal::hex!["798d4Ba9baf0064Ec19eB4F0a1a45785ae9D6DFc"]),
-                    // Dorothy
-                    H160::from(hex_literal::hex!["773539d4Ac0e786233D90A233654ccEE26a613D9"]),
-                    // Ethan
-                    H160::from(hex_literal::hex!["Ff64d3F6efE2317EE2807d223a0Bdc4c0c49dfDB"]),
-                    // Faith
-                    H160::from(hex_literal::hex!["C0F0f4ab324C46e55D02D0033343B4Be8A55532d"]),
-                    // Goliath
-                    H160::from(hex_literal::hex!["7BF369283338E12C90514468aa3868A551AB2929"]),
-                    // Heath
-                    H160::from(hex_literal::hex!["931f3600a299fd9B24cEfB3BfF79388D19804BeA"]),
-                    // Ida
-                    H160::from(hex_literal::hex!["C41C5F1123ECCd5ce233578B2e7ebd5693869d73"]),
-                    // Judith
-                    H160::from(hex_literal::hex!["2898FE7a42Be376C8BC7AF536A940F7Fd5aDd423"]),
-                    // Alice
-                    H160::from(hex_literal::hex!["d43593c715fdd31c61141abd04a99fd6822c8558"]),
-                ],
-            )
-        },
-        // Bootnodes
-        vec![],
-        // Telemetry
-        None,
-        // Protocol ID
-        None,
-        // Properties
-        Some(properties),
-        // Extensions
-        None,
-    ))
+	let mut properties = Properties::new();
+	properties.insert("tokenSymbol".into(), "NB".into());
+	properties.insert("tokenDecimals".into(), 18.into());
+	let wasm_binary = WASM_BINARY.ok_or_else(|| "Development wasm not available".to_string())?;
+	Ok(ChainSpec::from_genesis(
+		// Name
+		"Development",
+		// ID
+		"dev",
+		ChainType::Development,
+		move || {
+			nb_genesis(
+				wasm_binary,
+				// Initial PoA authorities
+				vec![authority_keys_from_seed("Alice")],
+				// Sudo account
+				get_account_id_from_seed::<sr25519::Public>("Alice"),
+				// Pre-funded accounts
+				vec![
+					get_account_id_from_seed::<sr25519::Public>("Alice"),
+					get_account_id_from_seed::<sr25519::Public>("Bob"),
+					get_account_id_from_seed::<sr25519::Public>("Alice//stash"),
+					get_account_id_from_seed::<sr25519::Public>("Bob//stash"),
+				],
+				true,
+				vec![
+					// Alith
+					H160::from(hex_literal::hex!["f24FF3a9CF04c71Dbc94D0b566f7A27B94566cac"]),
+					// Baltathar
+					H160::from(hex_literal::hex!["3Cd0A705a2DC65e5b1E1205896BaA2be8A07c6e0"]),
+					// Charleth
+					H160::from(hex_literal::hex!["798d4Ba9baf0064Ec19eB4F0a1a45785ae9D6DFc"]),
+					// Dorothy
+					H160::from(hex_literal::hex!["773539d4Ac0e786233D90A233654ccEE26a613D9"]),
+					// Ethan
+					H160::from(hex_literal::hex!["Ff64d3F6efE2317EE2807d223a0Bdc4c0c49dfDB"]),
+					// Faith
+					H160::from(hex_literal::hex!["C0F0f4ab324C46e55D02D0033343B4Be8A55532d"]),
+					// Goliath
+					H160::from(hex_literal::hex!["7BF369283338E12C90514468aa3868A551AB2929"]),
+					// Heath
+					H160::from(hex_literal::hex!["931f3600a299fd9B24cEfB3BfF79388D19804BeA"]),
+					// Ida
+					H160::from(hex_literal::hex!["C41C5F1123ECCd5ce233578B2e7ebd5693869d73"]),
+					// Judith
+					H160::from(hex_literal::hex!["2898FE7a42Be376C8BC7AF536A940F7Fd5aDd423"]),
+					// Alice
+					H160::from(hex_literal::hex!["d43593c715fdd31c61141abd04a99fd6822c8558"]),
+				],
+			)
+		},
+		// Bootnodes
+		vec![],
+		// Telemetry
+		None,
+		// Protocol ID
+		None,
+		// Properties
+		Some(properties),
+		// Extensions
+		None,
+	))
 }
 
 pub fn local_testnet_config() -> Result<ChainSpec, String> {
-    let wasm_binary = WASM_BINARY.ok_or_else(|| "Development wasm not available".to_string())?;
+	let wasm_binary = WASM_BINARY.ok_or_else(|| "Development wasm not available".to_string())?;
 
-    Ok(ChainSpec::from_genesis(
-        // Name
-        "Local Testnet",
-        // ID
-        "local_testnet",
-        ChainType::Local,
-        move || {
-            nb_genesis(
-                wasm_binary,
-                // Initial PoA authorities
-                vec![authority_keys_from_seed("Alice"), authority_keys_from_seed("Bob")],
-                // Sudo account
-                get_account_id_from_seed::<sr25519::Public>("Alice"),
-                // Pre-funded accounts
-                vec![
-                    get_account_id_from_seed::<sr25519::Public>("Alice"),
-                    get_account_id_from_seed::<sr25519::Public>("Bob"),
-                    get_account_id_from_seed::<sr25519::Public>("Charlie"),
-                    get_account_id_from_seed::<sr25519::Public>("Dave"),
-                    get_account_id_from_seed::<sr25519::Public>("Eve"),
-                    get_account_id_from_seed::<sr25519::Public>("Ferdie"),
-                    get_account_id_from_seed::<sr25519::Public>("Alice//stash"),
-                    get_account_id_from_seed::<sr25519::Public>("Bob//stash"),
-                    get_account_id_from_seed::<sr25519::Public>("Charlie//stash"),
-                    get_account_id_from_seed::<sr25519::Public>("Dave//stash"),
-                    get_account_id_from_seed::<sr25519::Public>("Eve//stash"),
-                    get_account_id_from_seed::<sr25519::Public>("Ferdie//stash"),
-                ],
-                true,
-                vec![],
-            )
-        },
-        // Bootnodes
-        vec![],
-        // Telemetry
-        None,
-        // Protocol ID
-        None,
-        // Properties
-        None,
-        // Extensions
-        None,
-    ))
+	Ok(ChainSpec::from_genesis(
+		// Name
+		"Local Testnet",
+		// ID
+		"local_testnet",
+		ChainType::Local,
+		move || {
+			nb_genesis(
+				wasm_binary,
+				// Initial PoA authorities
+				vec![authority_keys_from_seed("Alice"), authority_keys_from_seed("Bob")],
+				// Sudo account
+				get_account_id_from_seed::<sr25519::Public>("Alice"),
+				// Pre-funded accounts
+				vec![
+					get_account_id_from_seed::<sr25519::Public>("Alice"),
+					get_account_id_from_seed::<sr25519::Public>("Bob"),
+					get_account_id_from_seed::<sr25519::Public>("Charlie"),
+					get_account_id_from_seed::<sr25519::Public>("Dave"),
+					get_account_id_from_seed::<sr25519::Public>("Eve"),
+					get_account_id_from_seed::<sr25519::Public>("Ferdie"),
+					get_account_id_from_seed::<sr25519::Public>("Alice//stash"),
+					get_account_id_from_seed::<sr25519::Public>("Bob//stash"),
+					get_account_id_from_seed::<sr25519::Public>("Charlie//stash"),
+					get_account_id_from_seed::<sr25519::Public>("Dave//stash"),
+					get_account_id_from_seed::<sr25519::Public>("Eve//stash"),
+					get_account_id_from_seed::<sr25519::Public>("Ferdie//stash"),
+				],
+				true,
+				vec![],
+			)
+		},
+		// Bootnodes
+		vec![],
+		// Telemetry
+		None,
+		// Protocol ID
+		None,
+		// Properties
+		None,
+		// Extensions
+		None,
+	))
 }
 
 /// Configure initial storage state for FRAME modules.
 fn nb_genesis(
-    wasm_binary: &[u8],
-    initial_authorities: Vec<(AuraId, GrandpaId)>,
-    root_key: AccountId,
-    endowed_accounts: Vec<AccountId>,
-    _enable_println: bool,
-    addresses: Vec<H160>,
+	wasm_binary: &[u8],
+	initial_authorities: Vec<(AuraId, GrandpaId)>,
+	root_key: AccountId,
+	endowed_accounts: Vec<AccountId>,
+	_enable_println: bool,
+	addresses: Vec<H160>,
 ) -> GenesisConfig {
-    GenesisConfig {
-        system: SystemConfig {
-            // Add Wasm runtime to storage.
-            code: wasm_binary.to_vec(),
-            changes_trie_config: Default::default(),
-        },
-        balances: BalancesConfig {
-            // Configure endowed accounts with initial balance of 1 << 60.
-            balances: endowed_accounts
-                .iter()
-                .cloned()
-                .map(|k| (k, 1000000000000000000000))
-                .collect(),
-        },
-        aura: AuraConfig {
-            authorities: initial_authorities.iter().map(|x| (x.0.clone())).collect(),
-        },
-        grandpa: GrandpaConfig {
-            authorities: initial_authorities.iter().map(|x| (x.1.clone(), 1)).collect(),
-        },
-        sudo: SudoConfig {
-            // Assign network admin rights.
-            key: root_key,
-        },
-        ethereum_chain_id: EthereumChainIdConfig { chain_id: 1209u64 },
-        kitties: KittiesConfig {
-            kitties: vec![
-                (
-                    get_account_id_from_seed::<sr25519::Public>("Alice"),
-                    [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16],
-                    Gender::Female,
-                ),
-                (
-                    get_account_id_from_seed::<sr25519::Public>("Bob"),
-                    [0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16],
-                    Gender::Male,
-                ),
-            ],
-        },
-        vesting: VestingConfig {
-            vesting: vec![
-                (
-                    get_account_id_from_seed::<sr25519::Public>("Alice"),
-                    1,
-                    100,
-                    500000000000000000000,
-                ),
-                (get_account_id_from_seed::<sr25519::Public>("Bob"), 1, 100, 500000000000000000000),
-            ],
-        },
-        evm: EvmConfig {
-            accounts: addresses
-                .into_iter()
-                .map(|addr| {
-                    (
-                        addr,
-                        GenesisAccount {
-                            balance: U256::from(1_000_000_000_000_000_000_000u128),
-                            nonce: Default::default(),
-                            code: Default::default(),
-                            storage: Default::default(),
-                        },
-                    )
-                })
-                .collect(),
-        },
-        ethereum: EthereumConfig {},
-        erc20: ERC20Config {
-            name: String::from("NB Token").into_bytes(),
-            symbol: String::from("NB").into_bytes(),
-            decimal: 18,
-            owner: get_account_id_from_seed::<sr25519::Public>("Alice"),
-        },
-    }
+	GenesisConfig {
+		system: SystemConfig {
+			// Add Wasm runtime to storage.
+			code: wasm_binary.to_vec(),
+			changes_trie_config: Default::default(),
+		},
+		balances: BalancesConfig {
+			// Configure endowed accounts with initial balance of 1 << 60.
+			balances: endowed_accounts
+				.iter()
+				.cloned()
+				.map(|k| (k, 1000000000000000000000))
+				.collect(),
+		},
+		aura: AuraConfig {
+			authorities: initial_authorities.iter().map(|x| (x.0.clone())).collect(),
+		},
+		grandpa: GrandpaConfig {
+			authorities: initial_authorities.iter().map(|x| (x.1.clone(), 1)).collect(),
+		},
+		sudo: SudoConfig {
+			// Assign network admin rights.
+			key: root_key,
+		},
+		ethereum_chain_id: EthereumChainIdConfig { chain_id: 1209u64 },
+		kitties: KittiesConfig {
+			kitties: vec![
+				(
+					get_account_id_from_seed::<sr25519::Public>("Alice"),
+					[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16],
+					Gender::Female,
+				),
+				(
+					get_account_id_from_seed::<sr25519::Public>("Bob"),
+					[0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16],
+					Gender::Male,
+				),
+			],
+		},
+		vesting: VestingConfig {
+			vesting: vec![
+				(
+					get_account_id_from_seed::<sr25519::Public>("Alice"),
+					1,
+					100,
+					500000000000000000000,
+				),
+				(get_account_id_from_seed::<sr25519::Public>("Bob"), 1, 100, 500000000000000000000),
+			],
+		},
+		evm: EvmConfig {
+			accounts: addresses
+				.into_iter()
+				.map(|addr| {
+					(
+						addr,
+						GenesisAccount {
+							balance: U256::from(1_000_000_000_000_000_000_000u128),
+							nonce: Default::default(),
+							code: Default::default(),
+							storage: Default::default(),
+						},
+					)
+				})
+				.collect(),
+		},
+		ethereum: EthereumConfig {},
+		erc20: ERC20Config {
+			name: String::from("NB Token").into_bytes(),
+			symbol: String::from("NB").into_bytes(),
+			decimal: 18,
+			owner: get_account_id_from_seed::<sr25519::Public>("Alice"),
+		},
+	}
 }

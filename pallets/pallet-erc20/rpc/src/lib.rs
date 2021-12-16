@@ -1,15 +1,12 @@
-use std::sync::Arc;
 use codec::Codec;
-use sp_blockchain::HeaderBackend;
 use jsonrpc_core::{Error as RpcError, ErrorCode, Result};
 use jsonrpc_derive::rpc;
-use sp_runtime::{generic::BlockId, traits::{Block as BlockT}};
-use sp_api::ProvideRuntimeApi;
-use sp_core::Bytes;
-use pallet_erc20_rpc_runtime_api::{
-    ERC20Info
-};
 pub use pallet_erc20_rpc_runtime_api::ERC20Api as ERC20RuntimeApi;
+use pallet_erc20_rpc_runtime_api::ERC20Info;
+use sp_api::ProvideRuntimeApi;
+use sp_blockchain::HeaderBackend;
+use sp_runtime::{generic::BlockId, traits::Block as BlockT};
+use std::sync::Arc;
 
 #[rpc]
 pub trait ERC20Api<BlockHash, AccountId> {
@@ -51,8 +48,7 @@ impl From<Error> for i64 {
     }
 }
 
-impl<C, Block, AccountId> ERC20Api<<Block as BlockT>::Hash, AccountId>
-for ERC20<C, Block>
+impl<C, Block, AccountId> ERC20Api<<Block as BlockT>::Hash, AccountId> for ERC20<C, Block>
     where
         Block: BlockT,
         AccountId: Codec,
@@ -67,8 +63,7 @@ for ERC20<C, Block>
         let api = self.client.runtime_api();
         let at = BlockId::hash(at.unwrap_or_else(||
             // If the block hash is not supplied assume the best block.
-            self.client.info().best_hash
-        ));
+            self.client.info().best_hash));
         api.get_erc20_info(&at, owner).map_err(|e| RpcError {
             code: ErrorCode::ServerError(Error::RuntimeError.into()),
             message: "Unable to get erc20 info.".into(),

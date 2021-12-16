@@ -1,13 +1,13 @@
 use crate as pallet_erc20;
 use frame_support::{
-    parameter_types,
-    traits::{GenesisBuild, OnFinalize, OnInitialize},
+	parameter_types,
+	traits::{GenesisBuild, OnFinalize, OnInitialize},
 };
 use frame_system as system;
 use sp_core::H256;
 use sp_runtime::{
-    testing::Header,
-    traits::{BlakeTwo256, IdentityLookup},
+	testing::Header,
+	traits::{BlakeTwo256, IdentityLookup},
 };
 
 pub use pallet_erc20::{Config, Error, Event as ERC20Event};
@@ -39,29 +39,29 @@ parameter_types! {
 }
 
 impl system::Config for Test {
-    type AccountData = pallet_balances::AccountData<u128>;
-    type AccountId = u128;
-    type BaseCallFilter = frame_support::traits::Everything;
-    type BlockHashCount = BlockHashCount;
-    type BlockLength = ();
-    type BlockNumber = u64;
-    type BlockWeights = ();
-    type Call = Call;
-    type DbWeight = ();
-    type Event = Event;
-    type Hash = H256;
-    type Hashing = BlakeTwo256;
-    type Header = Header;
-    type Index = u64;
-    type Lookup = IdentityLookup<Self::AccountId>;
-    type OnKilledAccount = ();
-    type OnNewAccount = ();
-    type OnSetCode = ();
-    type Origin = Origin;
-    type PalletInfo = PalletInfo;
-    type SS58Prefix = ();
-    type SystemWeightInfo = ();
-    type Version = ();
+	type AccountData = pallet_balances::AccountData<u128>;
+	type AccountId = u128;
+	type BaseCallFilter = frame_support::traits::Everything;
+	type BlockHashCount = BlockHashCount;
+	type BlockLength = ();
+	type BlockNumber = u64;
+	type BlockWeights = ();
+	type Call = Call;
+	type DbWeight = ();
+	type Event = Event;
+	type Hash = H256;
+	type Hashing = BlakeTwo256;
+	type Header = Header;
+	type Index = u64;
+	type Lookup = IdentityLookup<Self::AccountId>;
+	type OnKilledAccount = ();
+	type OnNewAccount = ();
+	type OnSetCode = ();
+	type Origin = Origin;
+	type PalletInfo = PalletInfo;
+	type SS58Prefix = ();
+	type SystemWeightInfo = ();
+	type Version = ();
 }
 
 parameter_types! {
@@ -70,65 +70,65 @@ parameter_types! {
 }
 
 impl pallet_balances::Config for Test {
-    type AccountStore = System;
-    type Balance = u128;
-    type DustRemoval = ();
-    type Event = Event;
-    type ExistentialDeposit = ExistentialDeposit;
-    type MaxLocks = MaxLocks;
-    type MaxReserves = ();
-    type ReserveIdentifier = [u8; 8];
-    type WeightInfo = ();
+	type AccountStore = System;
+	type Balance = u128;
+	type DustRemoval = ();
+	type Event = Event;
+	type ExistentialDeposit = ExistentialDeposit;
+	type MaxLocks = MaxLocks;
+	type MaxReserves = ();
+	type ReserveIdentifier = [u8; 8];
+	type WeightInfo = ();
 }
 
 impl pallet_randomness_collective_flip::Config for Test {}
 
 impl pallet_erc20::Config for Test {
-    type Event = Event;
+	type Event = Event;
 }
 
 // Build test environment by setting the admin `key` for the Genesis.
 pub fn new_test_ext() -> sp_io::TestExternalities {
-    let mut t =
-        frame_system::GenesisConfig::default()
-            .build_storage::<Test>()
-            .unwrap();
-    pallet_balances::GenesisConfig::<Test> {
-        balances: vec![
-            (1, 100_000_000_000_000_000_000),
-            (2, 100_000_000_000_000_000_000),
-            (3, 100_000_000_000_000_000_000),
-        ],
-    }.assimilate_storage(&mut t)
-        .unwrap();
+	let mut t = frame_system::GenesisConfig::default().build_storage::<Test>().unwrap();
+	pallet_balances::GenesisConfig::<Test> {
+		balances: vec![
+			(1, 100_000_000_000_000_000_000),
+			(2, 100_000_000_000_000_000_000),
+			(3, 100_000_000_000_000_000_000),
+		],
+	}
+	.assimilate_storage(&mut t)
+	.unwrap();
 
-    pallet_erc20::GenesisConfig::<Test> {
-        name: String::from("NB Token").into_bytes(),
-        symbol: String::from("NB").into_bytes(),
-        decimal: 18,
-        owner: 1,
-    }.assimilate_storage(&mut t).unwrap();
+	pallet_erc20::GenesisConfig::<Test> {
+		name: String::from("NB Token").into_bytes(),
+		symbol: String::from("NB").into_bytes(),
+		decimal: 18,
+		owner: 1,
+	}
+	.assimilate_storage(&mut t)
+	.unwrap();
 
-    let mut ext = sp_io::TestExternalities::new(t);
-    ext.execute_with(|| System::set_block_number(1));
-    ext
+	let mut ext = sp_io::TestExternalities::new(t);
+	ext.execute_with(|| System::set_block_number(1));
+	ext
 }
 
 pub(crate) fn last_event() -> Event {
-    system::Pallet::<Test>::events().pop().expect("Event expected").event
+	system::Pallet::<Test>::events().pop().expect("Event expected").event
 }
 
 pub(crate) fn expect_event<E: Into<Event>>(e: E) {
-    assert_eq!(last_event(), e.into());
+	assert_eq!(last_event(), e.into());
 }
 
 /// Run until a particular block.
 pub fn run_to_block(n: u64) {
-    while System::block_number() < n {
-        Balances::on_finalize(System::block_number());
-        System::on_finalize(System::block_number());
-        System::set_block_number(System::block_number() + 1);
-        System::on_initialize(System::block_number());
-        Balances::on_initialize(System::block_number());
-    }
+	while System::block_number() < n {
+		Balances::on_finalize(System::block_number());
+		System::on_finalize(System::block_number());
+		System::set_block_number(System::block_number() + 1);
+		System::on_initialize(System::block_number());
+		Balances::on_initialize(System::block_number());
+	}
 }
