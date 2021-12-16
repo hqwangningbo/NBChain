@@ -60,6 +60,9 @@ pallet-evm-precompile-modexp = { git = "https://github.com/chainx-org/frontier",
 pallet-evm-precompile-simple = { git = "https://github.com/chainx-org/frontier", default-features = false, branch = "polkadot-v0.9.11" }
 pallet-evm-precompile-sha3fips = { git = "https://github.com/chainx-org/frontier", default-features = false, branch = "polkadot-v0.9.11" }
 
+# eth api
+fp-rpc = { git = "https://github.com/chainx-org/frontier", default-features = false, branch = "polkadot-v0.9.11" }
+fp-self-contained = { git = "https://github.com/chainx-org/frontier", default-features = false, branch = "polkadot-v0.9.11" }
 
 [build-dependencies]
 substrate-wasm-builder = { git = 'https://github.com/paritytech/substrate', branch = "polkadot-v0.9.11" }
@@ -110,4 +113,5 @@ std = [
     'sp-version/std',
     "pallet-evm/std",
     "pallet-ethereum/std",
+    "fp-rpc/std",
 ]
