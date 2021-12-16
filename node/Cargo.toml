@@ -17,6 +17,7 @@ structopt = "0.3.8"
 jsonrpc-core = "18.0.0"
 hex-literal = "0.3.3"
 serde = { version = "1.0.119", features = ["derive"] }
+futures = { version = "0.3.1", features = ["compat"] }
 
 # Substrate
 sc-cli = { git = 'https://github.com/paritytech/substrate', branch = "polkadot-v0.9.11", features = ["wasmtime"] }
@@ -32,6 +33,8 @@ sc-transaction-pool = { git = 'https://github.com/paritytech/substrate', branch 
 sc-transaction-pool-api = { git = 'https://github.com/paritytech/substrate', branch = "polkadot-v0.9.11" }
 sc-sync-state-rpc = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.11" }
 sc-chain-spec = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.11" }
+sc-network = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.11" }
+
 
 sp-consensus-aura = { git = 'https://github.com/paritytech/substrate', branch = "polkadot-v0.9.11" }
 sp-consensus = { git = 'https://github.com/paritytech/substrate', branch = "polkadot-v0.9.11" }
@@ -64,17 +67,14 @@ pallet-erc20-rpc = { version = "1.0.0", path = "../pallets/pallet-erc20/rpc" }
 nbchain-runtime = { version = "1.0.0", path = "../runtime" }
 
 # EVM
-#futures = { version = "0.3", features = ["compat"] }
-#jsonrpc-pubsub = "18.0.0"
-#sc-network = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.11" }
-#fp-consensus = { git = "https://github.com/chainx-org/frontier", branch = "new-polkadot-v0.9.11" }
-#fp-rpc = { git = "https://github.com/chainx-org/frontier", branch = "new-polkadot-v0.9.11" }
-#fc-consensus  = { git = "https://github.com/chainx-org/frontier", branch = "new-polkadot-v0.9.11" }
-#fc-rpc-core = { git = "https://github.com/chainx-org/frontier", branch = "new-polkadot-v0.9.11" }
-#fc-rpc = { git = "https://github.com/chainx-org/frontier", branch = "new-polkadot-v0.9.11" }
-#fc-mapping-sync = { git = "https://github.com/chainx-org/frontier", branch = "new-polkadot-v0.9.11" }
-#fc-db = { git = "https://github.com/chainx-org/frontier", branch = "new-polkadot-v0.9.11" }
-#pallet-ethereum = { git="https://github.com/chainx-org/frontier", branch = "new-polkadot-v0.9.11" }
+jsonrpc-pubsub = "18.0.0"
+fp-consensus = { git = "https://github.com/chainx-org/frontier", branch = "polkadot-v0.9.11" }
+fp-rpc = { git = "https://github.com/chainx-org/frontier", branch = "polkadot-v0.9.11" }
+fc-consensus = { git = "https://github.com/chainx-org/frontier", branch = "polkadot-v0.9.11" }
+fc-rpc-core = { git = "https://github.com/chainx-org/frontier", branch = "polkadot-v0.9.11" }
+fc-rpc = { git = "https://github.com/chainx-org/frontier", branch = "polkadot-v0.9.11" }
+fc-mapping-sync = { git = "https://github.com/chainx-org/frontier", branch = "polkadot-v0.9.11" }
+fc-db = { git = "https://github.com/chainx-org/frontier", branch = "polkadot-v0.9.11" }
 pallet-ethereum = { git = "https://github.com/chainx-org/frontier", branch = "polkadot-v0.9.11", default-features = false }
 
 [build-dependencies]

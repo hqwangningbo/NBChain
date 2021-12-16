@@ -184,7 +184,7 @@ fn nb_genesis(
             // Assign network admin rights.
             key: root_key,
         },
-        ethereum_chain_id: EthereumChainIdConfig { chain_id: 1500u64 },
+        ethereum_chain_id: EthereumChainIdConfig { chain_id: 1209u64 },
         kitties: KittiesConfig {
             kitties: vec![
                 (
