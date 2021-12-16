@@ -65,6 +65,10 @@ use pallet_evm::{
 };
 use sp_core::{H160, H256};
 
+mod precompiles;
+
+use precompiles::NBPrecompiles;
+
 /// An index to a block.
 pub type BlockNumber = u32;
 
@@ -431,7 +435,7 @@ impl pallet_evm::Config for Runtime {
     type Currency = Balances;
     type Event = Event;
     type Runner = pallet_evm::runner::stack::Runner<Self>;
-    type Precompiles = ();
+    type Precompiles = NBPrecompiles<Self>;
     type ChainId = EthereumChainId;
     type OnChargeTransaction = ();
     type BlockGasLimit = BlockGasLimit;
