@@ -65,6 +65,7 @@ use pallet_evm::{
 };
 use sp_core::{H160, H256};
 
+mod precompile_contract;
 mod precompiles;
 
 use precompiles::NBPrecompiles;
