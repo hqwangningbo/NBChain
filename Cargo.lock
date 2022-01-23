@@ -730,6 +730,19 @@ dependencies = [
 ]
 
 [[package]]
+name = "check"
+version = "1.0.0"
+dependencies = [
+ "frame-support",
+ "frame-system",
+ "parity-scale-codec",
+ "scale-info",
+ "serde",
+ "sp-application-crypto",
+ "sp-core",
+]
+
+[[package]]
 name = "chrono"
 version = "0.4.19"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -3917,6 +3930,7 @@ dependencies = [
 name = "nbchain-runtime"
 version = "1.0.0"
 dependencies = [
+ "check",
  "ethereum-chain-id",
  "fp-evm",
  "fp-rpc",

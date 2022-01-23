@@ -343,6 +343,10 @@ impl pallet_kitties::Config for Runtime {
     type MaxKittyOwned = MaxKittyOwned;
 }
 
+impl check::Config for Runtime {
+    type Event = Event;
+}
+
 parameter_types! {
 	// Choose a fee that incentivizes desireable behavior.
 	pub const NickReservationFee: u128 = 100;
@@ -473,6 +477,7 @@ construct_runtime!(
 		Evm: pallet_evm::{Pallet, Config, Call, Storage, Event<T>},
 		Ethereum: pallet_ethereum::{Pallet, Call, Storage, Event, Config, Origin},
 		ERC20: pallet_erc20::{Pallet, Call,Config<T>,Storage, Event<T>},
+		Check: check::{Pallet, Call,Storage, Event<T>},
 	}
 );
 
