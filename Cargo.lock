@@ -3743,6 +3743,8 @@ name = "nbchain-runtime"
 version = "3.0.0-monthly-2021-10"
 dependencies = [
  "ethereum-chain-id",
+ "fp-rpc",
+ "fp-self-contained",
  "frame-benchmarking",
  "frame-executive",
  "frame-support",
