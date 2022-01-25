@@ -12,10 +12,12 @@ use pallet_grandpa::{
 use sp_api::impl_runtime_apis;
 use sp_consensus_aura::sr25519::AuthorityId as AuraId;
 use sp_core::{crypto::KeyTypeId, OpaqueMetadata};
-use sp_runtime::{create_runtime_str, generic, impl_opaque_keys,
-				 traits::{AccountIdLookup, BlakeTwo256, Block as BlockT, IdentifyAccount, NumberFor, Verify},
-				 transaction_validity::{TransactionSource, TransactionValidity},
-				 ApplyExtrinsicResult, MultiSignature, Perquintill, FixedU128, FixedPointNumber};
+use sp_runtime::{
+	create_runtime_str, generic, impl_opaque_keys,
+	traits::{AccountIdLookup, BlakeTwo256, Block as BlockT, IdentifyAccount, NumberFor, Verify},
+	transaction_validity::{TransactionSource, TransactionValidity},
+	ApplyExtrinsicResult, FixedPointNumber, FixedU128, MultiSignature, Perquintill,
+};
 use sp_std::prelude::*;
 #[cfg(feature = "std")]
 use sp_version::NativeVersion;
@@ -27,20 +29,19 @@ pub use frame_support::{
 	traits::{KeyOwnerProofSystem, Randomness, StorageInfo},
 	weights::{
 		constants::{BlockExecutionWeight, ExtrinsicBaseWeight, RocksDbWeight, WEIGHT_PER_SECOND},
-		WeightToFeePolynomial, Weight, WeightToFeeCoefficients, WeightToFeeCoefficient,
+		Weight, WeightToFeeCoefficient, WeightToFeeCoefficients, WeightToFeePolynomial,
 	},
 	StorageValue,
 };
-use frame_support::traits::Get;
-use frame_support::weights::IdentityFee;
+use frame_support::{traits::Get, weights::IdentityFee};
 pub use pallet_balances::Call as BalancesCall;
 pub use pallet_timestamp::Call as TimestampCall;
 use pallet_transaction_payment::{CurrencyAdapter, Multiplier, MultiplierUpdate};
 use smallvec::smallvec;
+use sp_runtime::traits::{Convert, ConvertInto};
 #[cfg(any(feature = "std", test))]
 pub use sp_runtime::BuildStorage;
 pub use sp_runtime::{Perbill, Permill};
-use sp_runtime::traits::{Convert, ConvertInto};
 
 pub use pallet_kitties;
 /// Import the template pallet.
@@ -270,8 +271,8 @@ parameter_types! {
 pub struct LinearWeightToFee<C>(sp_std::marker::PhantomData<C>);
 
 impl<C> WeightToFeePolynomial for LinearWeightToFee<C>
-	where
-		C: Get<Balance>,
+where
+	C: Get<Balance>,
 {
 	type Balance = Balance;
 
@@ -319,11 +320,11 @@ impl pallet_kitties::Config for Runtime {
 
 /// Add this code block to your template for Nicks:
 parameter_types! {
-    // Choose a fee that incentivizes desireable behavior.
-    pub const NickReservationFee: u128 = 100;
-    pub const MinNickLength: u32 = 8;
-    // Maximum bounds on storage are important to secure your chain.
-    pub const MaxNickLength: u32 = 32;
+	// Choose a fee that incentivizes desireable behavior.
+	pub const NickReservationFee: u128 = 100;
+	pub const MinNickLength: u32 = 8;
+	// Maximum bounds on storage are important to secure your chain.
+	pub const MaxNickLength: u32 = 32;
 }
 
 impl pallet_nicks::Config for Runtime {
