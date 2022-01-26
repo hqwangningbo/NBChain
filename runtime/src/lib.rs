@@ -15,7 +15,7 @@ use sp_core::{crypto::KeyTypeId, OpaqueMetadata};
 use sp_runtime::{create_runtime_str, generic, impl_opaque_keys,
                  traits::{AccountIdLookup, BlakeTwo256, Block as BlockT, IdentifyAccount, NumberFor, Verify},
                  transaction_validity::{TransactionSource, TransactionValidity},
-                 ApplyExtrinsicResult, MultiSignature, Perquintill, FixedU128, FixedPointNumber};
+                 ApplyExtrinsicResult, MultiSignature};
 use sp_std::prelude::*;
 #[cfg(feature = "std")]
 use sp_version::NativeVersion;
@@ -32,21 +32,13 @@ pub use frame_support::{
     StorageValue,
 };
 use frame_support::traits::Get;
-use frame_support::weights::IdentityFee;
 pub use pallet_balances::Call as BalancesCall;
 pub use pallet_timestamp::Call as TimestampCall;
-use pallet_transaction_payment::{CurrencyAdapter, Multiplier, MultiplierUpdate};
+use pallet_transaction_payment::CurrencyAdapter;
 use smallvec::smallvec;
 #[cfg(any(feature = "std", test))]
 pub use sp_runtime::BuildStorage;
 pub use sp_runtime::{Perbill, Permill};
-use sp_runtime::traits::{Convert, ConvertInto};
-
-pub use pallet_kitties;
-/// Import the template pallet.
-pub use pallet_template;
-
-pub use ethereum_chain_id;
 
 /// An index to a block.
 pub type BlockNumber = u32;
@@ -302,69 +294,6 @@ impl pallet_sudo::Config for Runtime {
     type Call = Call;
 }
 
-/// Configure the pallet-template in pallets/template.
-impl pallet_template::Config for Runtime {
-    type Event = Event;
-}
-parameter_types! {
-// One can own at most 9,999 Kitties
-pub const MaxKittyOwned: u32 = 9999;
-}
-impl pallet_kitties::Config for Runtime {
-    type Event = Event;
-    type Currency = Balances;
-    type KittyRandomness = RandomnessCollectiveFlip;
-    type MaxKittyOwned = MaxKittyOwned;
-}
-
-/// Add this code block to your template for Nicks:
-parameter_types! {
-    // Choose a fee that incentivizes desireable behavior.
-    pub const NickReservationFee: u128 = 100;
-    pub const MinNickLength: u32 = 8;
-    // Maximum bounds on storage are important to secure your chain.
-    pub const MaxNickLength: u32 = 32;
-}
-
-impl pallet_nicks::Config for Runtime {
-    // The Balances pallet implements the ReservableCurrency trait.
-    // `Balances` is defined in `construct_runtime!` macro. See below.
-    // https://docs.substrate.io/rustdocs/latest/pallet_balances/index.html#implementations-2
-    type Currency = Balances;
-
-    // Use the NickReservationFee from the parameter_types block.
-    type ReservationFee = NickReservationFee;
-
-    // No action is taken when deposits are forfeited.
-    type Slashed = ();
-
-    // Configure the FRAME System Root origin as the Nick pallet admin.
-    // https://docs.substrate.io/rustdocs/latest/frame_system/enum.RawOrigin.html#variant.Root
-    type ForceOrigin = frame_system::EnsureRoot<AccountId>;
-
-    // Use the MinNickLength from the parameter_types block.
-    type MinLength = MinNickLength;
-
-    // Use the MaxNickLength from the parameter_types block.
-    type MaxLength = MaxNickLength;
-
-    // The ubiquitous event type.
-    type Event = Event;
-}
-
-impl ethereum_chain_id::Config for Runtime {}
-
-impl pallet_vesting::Config for Runtime {
-    type Event = Event;
-    type Currency = Balances;
-    type BlockNumberToBalance = ConvertInto;
-    type MinVestedTransfer = ExistentialDeposit;
-    type WeightInfo = ();
-    // `VestingInfo` encode length is 36bytes. 28 schedules gets encoded as 1009 bytes, which is the
-    // highest number of schedules that encodes less than 2^10.
-    const MAX_VESTING_SCHEDULES: u32 = 28;
-}
-
 impl study_storage::Config for Runtime {
     type Event = Event;
 }
@@ -384,12 +313,6 @@ construct_runtime!(
 		Balances: pallet_balances::{Pallet, Call, Storage, Config<T>, Event<T>},
 		TransactionPayment: pallet_transaction_payment::{Pallet, Storage},
 		Sudo: pallet_sudo::{Pallet, Call, Config<T>, Storage, Event<T>},
-		// Include the custom logic from the pallet-template in the runtime.
-		TemplateModule: pallet_template::{Pallet, Call, Storage, Event<T>},
-		Kitties: pallet_kitties::{Pallet, Call,Config<T>, Storage, Event<T>},
-		Nicks: pallet_nicks::{Pallet, Call, Storage, Event<T>},
-		EthereumChainId: ethereum_chain_id::{Pallet, Config, Storage},
-		Vesting: pallet_vesting::{Pallet, Call, Storage, Event<T>, Config<T>},
 		StudyStorage: study_storage::{Pallet, Call, Storage, Event<T>},
 	}
 );

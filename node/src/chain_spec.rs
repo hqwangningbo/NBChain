@@ -1,14 +1,12 @@
-use nbchain_runtime::pallet_kitties::Gender;
 pub use nbchain_runtime::{
-    AccountId, AuraConfig, BalancesConfig, GenesisConfig, GrandpaConfig, KittiesConfig, Signature,
-    SudoConfig, SystemConfig, WASM_BINARY, EthereumChainIdConfig, VestingConfig,
+    AccountId, AuraConfig, BalancesConfig, GenesisConfig, GrandpaConfig, Signature,
+    SudoConfig, SystemConfig, WASM_BINARY,
 };
 use sc_service::{ChainType, Properties};
 use sp_consensus_aura::sr25519::AuthorityId as AuraId;
 use sp_core::{sr25519, Pair, Public};
 use sp_finality_grandpa::AuthorityId as GrandpaId;
 use sp_runtime::traits::{IdentifyAccount, Verify};
-use nbchain_runtime::BlockNumber;
 
 // The URL for the telemetry server.
 // const STAGING_TELEMETRY_URL: &str = "wss://telemetry.polkadot.io/submit/";
@@ -153,39 +151,6 @@ fn nb_genesis(
         sudo: SudoConfig {
             // Assign network admin rights.
             key: root_key,
-        },
-        ethereum_chain_id: EthereumChainIdConfig {
-            chain_id: 1500u64
-        },
-        kitties: KittiesConfig {
-            kitties: vec![
-                (
-                    get_account_id_from_seed::<sr25519::Public>("Alice"),
-                    [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16],
-                    Gender::Female,
-                ),
-                (
-                    get_account_id_from_seed::<sr25519::Public>("Bob"),
-                    [0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16],
-                    Gender::Male,
-                ),
-            ],
-        },
-        vesting: VestingConfig {
-            vesting: vec![
-                (
-                    get_account_id_from_seed::<sr25519::Public>("Alice"),
-                    1,
-                    100,
-                    500000000000000000000
-                ),
-                (
-                    get_account_id_from_seed::<sr25519::Public>("Bob"),
-                    1,
-                    100,
-                    500000000000000000000
-                ),
-            ],
         },
     }
 }

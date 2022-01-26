@@ -1,13 +1,8 @@
 [package]
 name = 'nbchain'
-version = '3.0.0-monthly-2021-10'
-description = 'A fresh FRAME-based Substrate node, ready for hacking.'
-authors = ['Substrate DevHub <https://github.com/substrate-developer-hub>']
-homepage = 'https://substrate.io/'
+version = '0.1.0'
+authors = ['hqwangningbo']
 edition = '2018'
-license = 'Unlicense'
-publish = false
-repository = 'https://github.com/substrate-developer-hub/substrate-node-template/'
 build = 'build.rs'
 
 [[bin]]
@@ -59,25 +54,7 @@ pallet-transaction-payment-rpc = { git = 'https://github.com/paritytech/substrat
 frame-benchmarking = { git = 'https://github.com/paritytech/substrate', branch = "polkadot-v0.9.11" }
 frame-benchmarking-cli = { git = 'https://github.com/paritytech/substrate', branch = "polkadot-v0.9.11" }
 
-# Minix
-#pallet-coming-id-rpc = { path = "../pallets/pallet-coming-id/rpc" }
-#pallet-threshold-signature-rpc = { version = "3.0.0", path = "../pallets/threshold-signature/rpc"}
-#pallet-coming-auction-rpc = { path = "../pallets/pallet-coming-auction/rpc" }
-
-nbchain-runtime = { version = "3.0.0-monthly-2021-10", path = "../runtime" }
-
-# EVM
-#futures = { version = "0.3", features = ["compat"] }
-#jsonrpc-pubsub = "18.0.0"
-#sc-network = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.11" }
-#fp-consensus = { git = "https://github.com/chainx-org/frontier", branch = "new-polkadot-v0.9.11" }
-#fp-rpc = { git = "https://github.com/chainx-org/frontier", branch = "new-polkadot-v0.9.11" }
-#fc-consensus  = { git = "https://github.com/chainx-org/frontier", branch = "new-polkadot-v0.9.11" }
-#fc-rpc-core = { git = "https://github.com/chainx-org/frontier", branch = "new-polkadot-v0.9.11" }
-#fc-rpc = { git = "https://github.com/chainx-org/frontier", branch = "new-polkadot-v0.9.11" }
-#fc-mapping-sync = { git = "https://github.com/chainx-org/frontier", branch = "new-polkadot-v0.9.11" }
-#fc-db = { git = "https://github.com/chainx-org/frontier", branch = "new-polkadot-v0.9.11" }
-#pallet-ethereum = { git="https://github.com/chainx-org/frontier", branch = "new-polkadot-v0.9.11" }
+nbchain-runtime = { version = "0.1.0", path = "../runtime" }
 
 [build-dependencies]
 substrate-build-script-utils = { git = 'https://github.com/paritytech/substrate', branch = "polkadot-v0.9.11" }

@@ -1332,17 +1332,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "ethereum-chain-id"
-version = "3.0.0-monthly-2021-10"
-dependencies = [
- "frame-support",
- "frame-system",
- "parity-scale-codec",
- "scale-info",
- "serde",
-]
-
-[[package]]
 name = "event-listener"
 version = "2.5.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -3503,7 +3492,7 @@ dependencies = [
 
 [[package]]
 name = "nbchain"
-version = "3.0.0-monthly-2021-10"
+version = "0.1.0"
 dependencies = [
  "frame-benchmarking",
  "frame-benchmarking-cli",
@@ -3545,9 +3534,8 @@ dependencies = [
 
 [[package]]
 name = "nbchain-runtime"
-version = "3.0.0-monthly-2021-10"
+version = "0.1.0"
 dependencies = [
- "ethereum-chain-id",
  "frame-benchmarking",
  "frame-executive",
  "frame-support",
@@ -3558,15 +3546,11 @@ dependencies = [
  "pallet-aura",
  "pallet-balances",
  "pallet-grandpa",
- "pallet-kitties",
- "pallet-nicks",
  "pallet-randomness-collective-flip",
  "pallet-sudo",
- "pallet-template",
  "pallet-timestamp",
  "pallet-transaction-payment",
  "pallet-transaction-payment-rpc-runtime-api",
- "pallet-vesting",
  "parity-scale-codec",
  "scale-info",
  "serde",
@@ -3818,39 +3802,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "pallet-kitties"
-version = "3.0.0-monthly-2021-10"
-dependencies = [
- "frame-benchmarking",
- "frame-support",
- "frame-system",
- "log",
- "pallet-balances",
- "pallet-randomness-collective-flip",
- "parity-scale-codec",
- "scale-info",
- "serde",
- "sp-core",
- "sp-io",
- "sp-runtime",
- "sp-version",
-]
-
-[[package]]
-name = "pallet-nicks"
-version = "4.0.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=polkadot-v0.9.11#57346f6b24875f8935280dba51fa8ab0a9ba1e39"
-dependencies = [
- "frame-support",
- "frame-system",
- "parity-scale-codec",
- "scale-info",
- "sp-io",
- "sp-runtime",
- "sp-std",
-]
-
-[[package]]
 name = "pallet-randomness-collective-flip"
 version = "4.0.0-dev"
 source = "git+https://github.com/paritytech/substrate?branch=polkadot-v0.9.11#57346f6b24875f8935280dba51fa8ab0a9ba1e39"
@@ -3897,20 +3848,6 @@ dependencies = [
  "sp-io",
  "sp-runtime",
  "sp-std",
-]
-
-[[package]]
-name = "pallet-template"
-version = "3.0.0-monthly-2021-10"
-dependencies = [
- "frame-benchmarking",
- "frame-support",
- "frame-system",
- "parity-scale-codec",
- "scale-info",
- "sp-core",
- "sp-runtime",
- "sp-version",
 ]
 
 [[package]]
@@ -3974,20 +3911,6 @@ dependencies = [
  "parity-scale-codec",
  "sp-api",
  "sp-runtime",
-]
-
-[[package]]
-name = "pallet-vesting"
-version = "4.0.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=polkadot-v0.9.11#57346f6b24875f8935280dba51fa8ab0a9ba1e39"
-dependencies = [
- "frame-support",
- "frame-system",
- "log",
- "parity-scale-codec",
- "scale-info",
- "sp-runtime",
- "sp-std",
 ]
 
 [[package]]
