@@ -17,7 +17,7 @@ codec = { package = "parity-scale-codec", version = "2.3.1", default-features = 
 hex-literal = { version = "0.3.1", optional = true }
 scale-info = { version = "1.0.0", default-features = false, features = ["derive"] }
 smallvec = "1.7.0"
-serde = { version = "1.0.119", optional = true,features = ["derive"] }
+serde = { version = "1.0.119", optional = true, features = ["derive"] }
 
 sp-api = { git = 'https://github.com/paritytech/substrate', branch = "polkadot-v0.9.11", default-features = false }
 sp-block-builder = { git = 'https://github.com/paritytech/substrate', branch = "polkadot-v0.9.11", default-features = false }
@@ -55,6 +55,7 @@ pallet-vesting = { git = "https://github.com/paritytech/substrate", default-feat
 ethereum-chain-id = { default-features = false, path = "../pallets/ethereum-chain-id" }
 pallet-template = { default-features = false, path = "../pallets/template" }
 pallet-kitties = { default-features = false, path = "../pallets/pallet-kitties" }
+study-storage = { default-features = false, path = "../pallets/study-storage" }
 
 [build-dependencies]
 substrate-wasm-builder = { git = 'https://github.com/paritytech/substrate', branch = "polkadot-v0.9.11" }
