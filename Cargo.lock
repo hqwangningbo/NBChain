@@ -6883,8 +6883,10 @@ dependencies = [
  "frame-system",
  "parity-scale-codec",
  "scale-info",
+ "serde",
  "sp-core",
  "sp-runtime",
+ "sp-std",
  "sp-version",
 ]
 
