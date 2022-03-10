@@ -40,7 +40,7 @@ pub use pallet_balances::Call as BalancesCall;
 pub use pallet_timestamp::Call as TimestampCall;
 use pallet_transaction_payment::CurrencyAdapter;
 use smallvec::smallvec;
-use sp_runtime::traits::{ConvertInto, Dispatchable, PostDispatchInfoOf};
+use sp_runtime::traits::{Dispatchable, PostDispatchInfoOf};
 #[cfg(any(feature = "std", test))]
 pub use sp_runtime::BuildStorage;
 pub use sp_runtime::{Perbill, Permill};
@@ -334,65 +334,21 @@ impl pallet_erc20::Config for Runtime {
 }
 parameter_types! {
 // One can own at most 9,999 Kitties
-pub const MaxKittyOwned: u32 = 9999;
+pub const StakeForEachKitty: u64 = 1_000_000_000_000_000_000;
 }
 impl pallet_kitties::Config for Runtime {
     type Event = Event;
+    type Randomness = RandomnessCollectiveFlip;
+    type KittyIndex = u32;
+    type StakeForEachKitty = StakeForEachKitty;
     type Currency = Balances;
-    type KittyRandomness = RandomnessCollectiveFlip;
-    type MaxKittyOwned = MaxKittyOwned;
 }
 
 impl check::Config for Runtime {
     type Event = Event;
 }
 
-parameter_types! {
-	// Choose a fee that incentivizes desireable behavior.
-	pub const NickReservationFee: u128 = 100;
-	pub const MinNickLength: u32 = 8;
-	// Maximum bounds on storage are important to secure your chain.
-	pub const MaxNickLength: u32 = 32;
-}
-
-impl pallet_nicks::Config for Runtime {
-    // The Balances pallet implements the ReservableCurrency trait.
-    // `Balances` is defined in `construct_runtime!` macro. See below.
-    // https://docs.substrate.io/rustdocs/latest/pallet_balances/index.html#implementations-2
-    type Currency = Balances;
-
-    // Use the NickReservationFee from the parameter_types block.
-    type ReservationFee = NickReservationFee;
-
-    // No action is taken when deposits are forfeited.
-    type Slashed = ();
-
-    // Configure the FRAME System Root origin as the Nick pallet admin.
-    // https://docs.substrate.io/rustdocs/latest/frame_system/enum.RawOrigin.html#variant.Root
-    type ForceOrigin = frame_system::EnsureRoot<AccountId>;
-
-    // Use the MinNickLength from the parameter_types block.
-    type MinLength = MinNickLength;
-
-    // Use the MaxNickLength from the parameter_types block.
-    type MaxLength = MaxNickLength;
-
-    // The ubiquitous event type.
-    type Event = Event;
-}
-
 impl ethereum_chain_id::Config for Runtime {}
-
-impl pallet_vesting::Config for Runtime {
-    type Event = Event;
-    type Currency = Balances;
-    type BlockNumberToBalance = ConvertInto;
-    type MinVestedTransfer = ExistentialDeposit;
-    type WeightInfo = ();
-    // `VestingInfo` encode length is 36bytes. 28 schedules gets encoded as 1009 bytes, which is the
-    // highest number of schedules that encodes less than 2^10.
-    const MAX_VESTING_SCHEDULES: u32 = 28;
-}
 
 /// Current approximation of the gas/s consumption considering
 /// EVM execution over compiled WASM (on 4.4Ghz CPU).
@@ -470,10 +426,8 @@ construct_runtime!(
 		Sudo: pallet_sudo::{Pallet, Call, Config<T>, Storage, Event<T>},
 		// Include the custom logic from the pallet-template in the runtime.
 		TemplateModule: pallet_template::{Pallet, Call, Storage, Event<T>},
-		Kitties: pallet_kitties::{Pallet, Call,Config<T>, Storage, Event<T>},
-		Nicks: pallet_nicks::{Pallet, Call, Storage, Event<T>},
+		KittiesModule: pallet_kitties::{Pallet, Call, Storage, Event<T>},
 		EthereumChainId: ethereum_chain_id::{Pallet, Config, Storage},
-		Vesting: pallet_vesting::{Pallet, Call, Storage, Event<T>, Config<T>},
 		Evm: pallet_evm::{Pallet, Config, Call, Storage, Event<T>},
 		Ethereum: pallet_ethereum::{Pallet, Call, Storage, Event, Config, Origin},
 		ERC20: pallet_erc20::{Pallet, Call,Config<T>,Storage, Event<T>},
