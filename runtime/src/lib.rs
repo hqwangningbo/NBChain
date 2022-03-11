@@ -294,8 +294,20 @@ impl pallet_sudo::Config for Runtime {
     type Call = Call;
 }
 
-impl study_storage::Config for Runtime {
+parameter_types! {
+// One can own at most 9,999 Kitties
+pub const StakeForEachKitty: u64 = 1_000_000_000_000_000_000;
+pub const BreedFee: Balance = 5_000_000_000_000_000_000;
+pub const MaxCreated: u8 = 3;
+}
+impl pallet_kitties::Config for Runtime {
     type Event = Event;
+    type Randomness = RandomnessCollectiveFlip;
+    type KittyIndex = u32;
+    type StakeForEachKitty = StakeForEachKitty;
+    type Currency = Balances;
+    type MaxCreated = MaxCreated;
+    type BreedFee = BreedFee;
 }
 
 // Create the runtime by composing the FRAME pallets that were previously configured.
@@ -313,7 +325,7 @@ construct_runtime!(
 		Balances: pallet_balances::{Pallet, Call, Storage, Config<T>, Event<T>},
 		TransactionPayment: pallet_transaction_payment::{Pallet, Storage},
 		Sudo: pallet_sudo::{Pallet, Call, Config<T>, Storage, Event<T>},
-		StudyStorage: study_storage::{Pallet, Call, Storage, Event<T>},
+		Kitties: pallet_kitties::{Pallet, Call, Storage, Event<T>},
 	}
 );
 

@@ -46,7 +46,7 @@ pallet-transaction-payment = { git = 'https://github.com/paritytech/substrate', 
 pallet-transaction-payment-rpc-runtime-api = { git = 'https://github.com/paritytech/substrate', branch = "polkadot-v0.9.11", default-features = false }
 
 
-study-storage = { default-features = false, path = "../pallets/study-storage" }
+pallet-kitties = { default-features = false, path = "../pallets/pallet-kitties" }
 
 [build-dependencies]
 substrate-wasm-builder = { git = 'https://github.com/paritytech/substrate', branch = "polkadot-v0.9.11" }
@@ -78,7 +78,7 @@ std = [
     'pallet-timestamp/std',
     'pallet-transaction-payment-rpc-runtime-api/std',
     'pallet-transaction-payment/std',
-    'study-storage/std',
+    'pallet-kitties/std',
     'sp-api/std',
     'sp-block-builder/std',
     'sp-consensus-aura/std',
