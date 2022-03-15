@@ -21,6 +21,11 @@ use sp_std::prelude::*;
 use sp_version::NativeVersion;
 use sp_version::RuntimeVersion;
 
+mod impls;
+pub mod constants;
+
+pub use constants::currency::*;
+
 // A few exports that help ease life for downstream crates.
 pub use frame_support::{
     construct_runtime, parameter_types,
@@ -31,11 +36,8 @@ pub use frame_support::{
     },
     StorageValue,
 };
-use frame_support::traits::Get;
 pub use pallet_balances::Call as BalancesCall;
 pub use pallet_timestamp::Call as TimestampCall;
-use pallet_transaction_payment::CurrencyAdapter;
-use smallvec::smallvec;
 #[cfg(any(feature = "std", test))]
 pub use sp_runtime::BuildStorage;
 pub use sp_runtime::{Perbill, Permill};
@@ -254,44 +256,56 @@ impl pallet_balances::Config for Runtime {
 }
 
 parameter_types! {
-	pub const FeeWeightRatio: u128 = 1_000;
-	pub const TransactionByteFee: Balance = 1;
-	pub OperationalFeeMultiplier: u8 = 5;
-}
-
-pub struct LinearWeightToFee<C>(sp_std::marker::PhantomData<C>);
-
-impl<C> WeightToFeePolynomial for LinearWeightToFee<C>
-    where
-        C: Get<Balance>,
-{
-    type Balance = Balance;
-
-    fn polynomial() -> WeightToFeeCoefficients<Self::Balance> {
-        let coefficient = WeightToFeeCoefficient {
-            coeff_integer: 0,
-            // coeff_frac: Perbill::zero(),
-            coeff_frac: Perbill::from_rational(935u64, 1000u64),
-            negative: false,
-            degree: 1,
-        };
-
-        smallvec!(coefficient)
-    }
+    /// Relay Chain `TransactionByteFee` / 10
+    pub const TransactionByteFee: Balance = MILLICENTS;
+    pub const OperationalFeeMultiplier: u8 = 5;
 }
 
 impl pallet_transaction_payment::Config for Runtime {
-    type OnChargeTransaction = CurrencyAdapter<Balances, ()>;
+    type OnChargeTransaction =
+    pallet_transaction_payment::CurrencyAdapter<Balances, impls::DealWithFees>;
     type TransactionByteFee = TransactionByteFee;
+    type WeightToFee = constants::fee::WeightToFee;
+    type FeeMultiplierUpdate = impls::SlowAdjustingFeeUpdate<Runtime>;
     type OperationalFeeMultiplier = OperationalFeeMultiplier;
-    // type WeightToFee = IdentityFee<Balance>;
-    type WeightToFee = LinearWeightToFee<FeeWeightRatio>;
-    type FeeMultiplierUpdate = ();
 }
 
 impl pallet_sudo::Config for Runtime {
     type Event = Event;
     type Call = Call;
+}
+
+parameter_types! {
+    pub const DisabledValidatorsThreshold: Perbill = Perbill::from_percent(33);
+    pub const Period: u32 = 30 * MINUTES;
+    pub const Offset: u32 = 0;
+}
+
+impl pallet_session::Config for Runtime {
+    type Event = Event;
+    type ValidatorId = <Self as frame_system::Config>::AccountId;
+    // we don't have stash and controller, thus we don't need the convert as well.
+    type ValidatorIdOf = impls::IdentityAura;
+    type ShouldEndSession = pallet_session::PeriodicSessions<Period, Offset>;
+    type NextSessionRotation = pallet_session::PeriodicSessions<Period, Offset>;
+    type SessionManager = impls::IdentitySession<Self>;
+    // Essentially just Aura, but lets be pedantic.
+    type SessionHandler =
+    <opaque::SessionKeys as sp_runtime::traits::OpaqueKeys>::KeyTypeIdProviders;
+    type Keys = opaque::SessionKeys;
+    type DisabledValidatorsThreshold = DisabledValidatorsThreshold;
+    type WeightInfo = ();
+}
+
+parameter_types! {
+    pub const UncleGenerations: BlockNumber = 5;
+}
+
+impl pallet_authorship::Config for Runtime {
+    type FindAuthor = pallet_session::FindAccountFromAuthorIndex<Self, Aura>;
+    type UncleGenerations = UncleGenerations;
+    type FilterUncle = ();
+    type EventHandler = ();
 }
 
 parameter_types! {
@@ -320,12 +334,14 @@ construct_runtime!(
 		System: frame_system::{Pallet, Call, Config, Storage, Event<T>},
 		RandomnessCollectiveFlip: pallet_randomness_collective_flip::{Pallet, Storage},
 		Timestamp: pallet_timestamp::{Pallet, Call, Storage, Inherent},
-		Aura: pallet_aura::{Pallet, Config<T>},
+		Aura: pallet_aura::{Pallet,Storage, Config<T>},
 		Grandpa: pallet_grandpa::{Pallet, Call, Storage, Config, Event},
 		Balances: pallet_balances::{Pallet, Call, Storage, Config<T>, Event<T>},
 		TransactionPayment: pallet_transaction_payment::{Pallet, Storage},
 		Sudo: pallet_sudo::{Pallet, Call, Config<T>, Storage, Event<T>},
 		Kitties: pallet_kitties::{Pallet, Call, Storage, Event<T>},
+		Session: pallet_session::{Pallet, Call, Storage, Event, Config<T>},
+		Authorship: pallet_authorship::{Pallet, Call, Storage}
 	}
 );
 

@@ -1,6 +1,6 @@
 pub use nbchain_runtime::{
     AccountId, AuraConfig, BalancesConfig, GenesisConfig, GrandpaConfig, Signature,
-    SudoConfig, SystemConfig, WASM_BINARY,
+    SudoConfig, SystemConfig, WASM_BINARY, SessionConfig, opaque::SessionKeys,
 };
 use sc_service::{ChainType, Properties};
 use sp_consensus_aura::sr25519::AuthorityId as AuraId;
@@ -32,8 +32,65 @@ pub fn get_account_id_from_seed<TPublic: Public>(seed: &str) -> AccountId
 }
 
 /// Generate an Aura authority key.
-pub fn authority_keys_from_seed(s: &str) -> (AuraId, GrandpaId) {
-    (get_from_seed::<AuraId>(s), get_from_seed::<GrandpaId>(s))
+pub fn authority_keys_from_seed(s: &str) -> (AccountId, AuraId, GrandpaId) {
+    (
+        get_account_id_from_seed::<sr25519::Public>(s),
+        get_from_seed::<AuraId>(s),
+        get_from_seed::<GrandpaId>(s)
+    )
+}
+
+// pub fn testnet_config() -> Result<ChainSpec, String> {
+//     let mut properties = Properties::new();
+//     properties.insert("tokenSymbol".into(), "NB".into());
+//     properties.insert("tokenDecimals".into(), 18.into());
+//     let wasm_binary = WASM_BINARY.ok_or_else(|| "Development wasm not available".to_string())?;
+//     Ok(ChainSpec::from_genesis(
+//         // Name
+//         "nbchain",
+//         // ID
+//         "testnet",
+//         ChainType::Live,
+//         move || {
+//             nb_genesis(
+//                 wasm_binary,
+//                 // Initial PoA authorities
+//                 vec![
+//                     (
+//                         AccountId::from_ss58check("5TGHffg29XJo5qjxTz1i66GD56umc5o75rz3WebS426Pvqzh").unwrap(),
+//                         AuraId::from_ss58check("5HVywpNFg26mAzhDwh1bWX2iszmXHbFeRrh2VKs5qLXGrkVL").unwrap(),
+//                         GrandpaId::from_ss58check("5GnQz21HZxCvK8gvaEX3VVAq3QP5JSoasRNo5HbpBePPu36Z").unwrap(),
+//                     ),
+//                     (
+//                         AccountId::from_ss58check("5Tb1azWspGFtNHEdEoSQvJYahbD7B3o4eGEXLarncock4XFZ").unwrap(),
+//                         AuraId::from_ss58check("5EvR75tnUoHR7dyLtwwrmXizqUewxn7jVeCvf8cheQTnYmqt").unwrap(),
+//                         GrandpaId::from_ss58check("5GoTUw4EAi16ntdWtH69oXJrSH7puBa3G3PLKimirCLXy2V8").unwrap(),
+//                     ),
+//                 ],
+//                 // Sudo account
+//                 AccountId::from_ss58check("5TGHffg29XJo5qjxTz1i66GD56umc5o75rz3WebS426Pvqzh").unwrap(),
+//                 // Pre-funded accounts
+//                 vec![
+//                     AccountId::from_ss58check("5TGHffg29XJo5qjxTz1i66GD56umc5o75rz3WebS426Pvqzh").unwrap()
+//                 ],
+//                 true,
+//             )
+//         },
+//         // Bootnodes
+//         vec![],
+//         // Telemetry
+//         None,
+//         // Protocol ID
+//         None,
+//         // Properties
+//         Some(properties),
+//         // Extensions
+//         None,
+//     ))
+// }
+
+pub fn testnet_config() -> Result<ChainSpec, String> {
+    ChainSpec::from_json_bytes(&include_bytes!("../res/testnet-raw.json")[..])
 }
 
 pub fn development_config() -> Result<ChainSpec, String> {
@@ -124,10 +181,14 @@ pub fn local_testnet_config() -> Result<ChainSpec, String> {
     ))
 }
 
+fn nbchain_session_keys(aura: AuraId, grandpa: GrandpaId) -> SessionKeys {
+    SessionKeys { aura, grandpa }
+}
+
 /// Configure initial storage state for FRAME modules.
 fn nb_genesis(
     wasm_binary: &[u8],
-    initial_authorities: Vec<(AuraId, GrandpaId)>,
+    initial_authorities: Vec<(AccountId, AuraId, GrandpaId)>,
     root_key: AccountId,
     endowed_accounts: Vec<AccountId>,
     _enable_println: bool,
@@ -140,17 +201,26 @@ fn nb_genesis(
         },
         balances: BalancesConfig {
             // Configure endowed accounts with initial balance of 1 << 60.
-            balances: endowed_accounts.iter().cloned().map(|k| (k, 1000000000000000000000)).collect(),
+            balances: endowed_accounts.iter().cloned().map(|k| (k, 210_000_000_000_000_000_000_000)).collect(),
         },
-        aura: AuraConfig {
-            authorities: initial_authorities.iter().map(|x| (x.0.clone())).collect(),
+        session: SessionConfig {
+            keys: initial_authorities
+                .iter()
+                .map(|x| {
+                    (
+                        (x.0).clone(),
+                        (x.0).clone(),
+                        nbchain_session_keys(x.1.clone(), x.2.clone()),
+                    )
+                })
+                .collect::<Vec<_>>(),
         },
-        grandpa: GrandpaConfig {
-            authorities: initial_authorities.iter().map(|x| (x.1.clone(), 1)).collect(),
-        },
+        aura: Default::default(),
+        grandpa: Default::default(),
         sudo: SudoConfig {
             // Assign network admin rights.
             key: root_key,
         },
     }
 }
+

@@ -27,6 +27,7 @@ sp-core = { git = 'https://github.com/paritytech/substrate', branch = "polkadot-
 sp-runtime = { git = 'https://github.com/paritytech/substrate', branch = "polkadot-v0.9.11", default-features = false }
 sp-io = { git = 'https://github.com/paritytech/substrate', branch = "polkadot-v0.9.11", default-features = false }
 
+sp-staking = { git = 'https://github.com/paritytech/substrate', branch = "polkadot-v0.9.11", default-features = false }
 frame-executive = { git = 'https://github.com/paritytech/substrate', branch = "polkadot-v0.9.11", default-features = false }
 frame-support = { git = 'https://github.com/paritytech/substrate', branch = "polkadot-v0.9.11", default-features = false }
 frame-system = { git = 'https://github.com/paritytech/substrate', branch = "polkadot-v0.9.11", default-features = false }
@@ -44,8 +45,8 @@ pallet-sudo = { git = 'https://github.com/paritytech/substrate', branch = "polka
 pallet-timestamp = { git = 'https://github.com/paritytech/substrate', branch = "polkadot-v0.9.11", default-features = false }
 pallet-transaction-payment = { git = 'https://github.com/paritytech/substrate', branch = "polkadot-v0.9.11", default-features = false }
 pallet-transaction-payment-rpc-runtime-api = { git = 'https://github.com/paritytech/substrate', branch = "polkadot-v0.9.11", default-features = false }
-
-
+pallet-session = { git = 'https://github.com/paritytech/substrate', branch = "polkadot-v0.9.11", default-features = false }
+pallet-authorship = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.11", default-features = false }
 pallet-kitties = { default-features = false, path = "../pallets/pallet-kitties" }
 
 [build-dependencies]
@@ -79,6 +80,7 @@ std = [
     'pallet-transaction-payment-rpc-runtime-api/std',
     'pallet-transaction-payment/std',
     'pallet-kitties/std',
+    "pallet-session/std",
     'sp-api/std',
     'sp-block-builder/std',
     'sp-consensus-aura/std',
@@ -90,4 +92,5 @@ std = [
     'sp-std/std',
     'sp-transaction-pool/std',
     'sp-version/std',
+    "sp-staking/std",
 ]
