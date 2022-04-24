@@ -152,5 +152,11 @@ fn nb_genesis(
             // Assign network admin rights.
             key: root_key,
         },
+        council: Default::default(),
+        elections: Default::default(),
+        democracy: Default::default(),
+        technical_committee: Default::default(),
+        technical_membership: Default::default(),
+        treasury: Default::default(),
     }
 }
