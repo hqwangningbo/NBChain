@@ -1,0 +1,64 @@
+{
+  "relaychain": {
+    "bin": "./bin/polkadot",
+    "chain": "rococo-local",
+    "nodes": [
+      {
+        "name": "alice",
+        "wsPort": 9944,
+        "port": 30444,
+        "basePath": "polkadot-launch/relayChain/alice",
+        "flags": [
+          "--unsafe-ws-external",
+          "--unsafe-rpc-external",
+          "--rpc-cors=all"
+        ]
+      },
+      {
+        "name": "bob",
+        "wsPort": 9955,
+        "port": 30555,
+        "basePath": "polkadot-launch/relayChain/bob"
+      }
+    ],
+    "genesis": {
+      "runtime": {
+        "runtime_genesis_config": {
+          "configuration": {
+            "config": {
+              "validation_upgrade_frequency": 10,
+              "validation_upgrade_delay": 10
+            }
+          }
+        }
+      }
+    }
+  },
+  "parachains": [
+    {
+      "bin": "../target/release/parachain-template-node",
+      "chain": "local",
+      "id": "1000",
+      "balance": "1000000000000000000000",
+      "nodes": [
+        {
+          "wsPort": 9988,
+          "name": "alice",
+          "port": 31200,
+          "basePath": "polkadot-launch/paraChain/alice",
+          "flags": [
+            "--unsafe-ws-external",
+            "--unsafe-rpc-external",
+            "--rpc-cors=all",
+            "--",
+            "--execution=wasm"
+          ]
+        }
+      ]
+    }
+  ],
+  "simpleParachains": [],
+  "hrmpChannels": [],
+  "types": {},
+  "finalization": false
+}
