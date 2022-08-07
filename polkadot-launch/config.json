@@ -7,7 +7,6 @@
         "name": "alice",
         "wsPort": 9944,
         "port": 30444,
-        "basePath": "polkadot-launch/relayChain/alice",
         "flags": [
           "--unsafe-ws-external",
           "--unsafe-rpc-external",
@@ -17,8 +16,7 @@
       {
         "name": "bob",
         "wsPort": 9955,
-        "port": 30555,
-        "basePath": "polkadot-launch/relayChain/bob"
+        "port": 30555
       }
     ],
     "genesis": {
@@ -36,7 +34,7 @@
   },
   "parachains": [
     {
-      "bin": "../target/release/parachain-template-node",
+      "bin": "../target/release/nbchain-node",
       "chain": "local",
       "id": "1000",
       "balance": "1000000000000000000000",
@@ -45,7 +43,6 @@
           "wsPort": 9988,
           "name": "alice",
           "port": 31200,
-          "basePath": "polkadot-launch/paraChain/alice",
           "flags": [
             "--unsafe-ws-external",
             "--unsafe-rpc-external",
