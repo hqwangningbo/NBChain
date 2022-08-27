@@ -24,6 +24,7 @@ smallvec = "1.8.1"
 
 # Local
 pallet-template = { path = "../pallets/template", default-features = false }
+pallet-counter = { path = "../pallets/counter", default-features = false }
 
 # Substrate
 frame-benchmarking = { git = "https://github.com/paritytech/substrate", default-features = false, optional = true, branch = "polkadot-v0.9.26" }
@@ -103,6 +104,7 @@ std = [
     "pallet-sudo/std",
     "pallet-template/std",
     "pallet-timestamp/std",
+    "pallet-counter/std",
     "pallet-transaction-payment-rpc-runtime-api/std",
     "pallet-transaction-payment/std",
     "pallet-xcm/std",
