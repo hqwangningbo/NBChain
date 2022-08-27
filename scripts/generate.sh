@@ -65,7 +65,7 @@ newBalance='
 
 newSudo='
 {
-  "sudo":"5CdP9o2qTCPe26e3J5kWXm1XDrT9G9eQ6NquiYGtqZaEG7aw"
+  "sudo":"5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY"
 }'
 
 mkdir config
