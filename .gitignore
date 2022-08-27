@@ -5,10 +5,10 @@
 .idea
 .vscode
 .DS_Store
-script/data
-script/config
-script/nbchain-node
-script/polkadot
+scripts/data
+scripts/config
+scripts/nbchain-node
+scripts/polkadot
 *.log
 
 
