@@ -70,6 +70,7 @@ pub fn development_config() -> Result<ChainSpec, String> {
         None,
         // Protocol ID
         None,
+        None,
         // Properties
         Some(properties),
         // Extensions
@@ -117,6 +118,7 @@ pub fn local_testnet_config() -> Result<ChainSpec, String> {
         None,
         // Protocol ID
         None,
+        None,
         // Properties
         None,
         // Extensions
@@ -136,7 +138,6 @@ fn nb_genesis(
         system: SystemConfig {
             // Add Wasm runtime to storage.
             code: wasm_binary.to_vec(),
-            changes_trie_config: Default::default(),
         },
         balances: BalancesConfig {
             // Configure endowed accounts with initial balance of 1 << 60.
@@ -150,7 +151,7 @@ fn nb_genesis(
         },
         sudo: SudoConfig {
             // Assign network admin rights.
-            key: root_key,
+            key: Some(root_key),
         },
     }
 }

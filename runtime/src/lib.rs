@@ -31,7 +31,9 @@ pub use frame_support::{
     },
     StorageValue,
 };
+use frame_support::pallet_prelude::ConstU32;
 use frame_support::traits::Get;
+use frame_support::weights::IdentityFee;
 pub use pallet_balances::Call as BalancesCall;
 pub use pallet_timestamp::Call as TimestampCall;
 use pallet_transaction_payment::CurrencyAdapter;
@@ -99,6 +101,7 @@ pub const VERSION: RuntimeVersion = RuntimeVersion {
     impl_version: 1,
     apis: RUNTIME_API_VERSIONS,
     transaction_version: 1,
+    state_version: 1,
 };
 
 /// This determines the average expected block time that we are targeting.
@@ -188,6 +191,7 @@ impl frame_system::Config for Runtime {
     type SS58Prefix = SS58Prefix;
     /// The set code logic, just the default since we're not a parachain.
     type OnSetCode = ();
+    type MaxConsumers = frame_support::traits::ConstU32<16>;
 }
 
 impl pallet_randomness_collective_flip::Config for Runtime {}
@@ -282,11 +286,12 @@ impl<C> WeightToFeePolynomial for LinearWeightToFee<C>
 
 impl pallet_transaction_payment::Config for Runtime {
     type OnChargeTransaction = CurrencyAdapter<Balances, ()>;
-    type TransactionByteFee = TransactionByteFee;
     type OperationalFeeMultiplier = OperationalFeeMultiplier;
     // type WeightToFee = IdentityFee<Balance>;
-    type WeightToFee = LinearWeightToFee<FeeWeightRatio>;
+    type WeightToFee = IdentityFee<Balance>;
     type FeeMultiplierUpdate = ();
+    type Event = Event;
+    type LengthToFee = IdentityFee<Balance>;
 }
 
 impl pallet_sudo::Config for Runtime {
@@ -294,7 +299,8 @@ impl pallet_sudo::Config for Runtime {
     type Call = Call;
 }
 
-impl study_storage::Config for Runtime {
+impl pallet_poe::Config for Runtime {
+    type MaxClaimLength = ConstU32<512>;
     type Event = Event;
 }
 
@@ -311,9 +317,9 @@ construct_runtime!(
 		Aura: pallet_aura::{Pallet, Config<T>},
 		Grandpa: pallet_grandpa::{Pallet, Call, Storage, Config, Event},
 		Balances: pallet_balances::{Pallet, Call, Storage, Config<T>, Event<T>},
-		TransactionPayment: pallet_transaction_payment::{Pallet, Storage},
+		TransactionPayment: pallet_transaction_payment::{Pallet, Storage,Event<T>},
 		Sudo: pallet_sudo::{Pallet, Call, Config<T>, Storage, Event<T>},
-		StudyStorage: study_storage::{Pallet, Call, Storage, Event<T>},
+		Poe: pallet_poe::{Pallet, Call, Storage, Event<T>},
 	}
 );
 
