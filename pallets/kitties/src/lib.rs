@@ -15,10 +15,7 @@ type BalanceOf<T> =
 #[frame_support::pallet]
 pub mod pallet {
 	use super::*;
-	use frame_support::inherent::Vec;
-	use frame_support::pallet_prelude::*;
-	use frame_support::traits::ExistenceRequirement;
-	use frame_support::PalletId;
+	use frame_support::{inherent::Vec, pallet_prelude::*, traits::ExistenceRequirement, PalletId};
 	use frame_system::pallet_prelude::*;
 	use sp_io::hashing::blake2_128;
 	use sp_runtime::traits::{AccountIdConversion, AtLeast32BitUnsigned, CheckedAdd, One};

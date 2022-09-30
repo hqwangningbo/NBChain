@@ -1,6 +1,8 @@
 use crate as pallet_kitties;
-use frame_support::traits::{ConstU16, ConstU64};
-use frame_support::PalletId;
+use frame_support::{
+	traits::{ConstU16, ConstU64},
+	PalletId,
+};
 use frame_system as system;
 pub use pallet_kitties::{Error, Event as KittyEvent};
 use pallet_randomness_collective_flip;
