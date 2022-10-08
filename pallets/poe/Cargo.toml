@@ -23,7 +23,6 @@ sp-runtime = { git = 'https://github.com/paritytech/substrate', branch = "polkad
 
 [features]
 default = ['std']
-runtime-benchmarks = ['frame-benchmarking']
 std = [
     'codec/std',
     'scale-info/std',
@@ -33,3 +32,4 @@ std = [
     'sp-std/std',
 ]
 try-runtime = ['frame-support/try-runtime']
+runtime-benchmarks = ["frame-benchmarking/runtime-benchmarks"]

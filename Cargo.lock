@@ -4239,6 +4239,24 @@ dependencies = [
 ]
 
 [[package]]
+name = "pallet-offchain-worker"
+version = "4.0.0-dev"
+dependencies = [
+ "frame-benchmarking",
+ "frame-support",
+ "frame-system",
+ "log",
+ "parity-scale-codec",
+ "scale-info",
+ "serde",
+ "serde_json",
+ "sp-core",
+ "sp-io",
+ "sp-runtime",
+ "sp-std",
+]
+
+[[package]]
 name = "pallet-poe"
 version = "0.1.0"
 dependencies = [

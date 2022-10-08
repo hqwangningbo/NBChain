@@ -48,7 +48,7 @@ pallet-transaction-payment-rpc-runtime-api = { git = 'https://github.com/parityt
 # nbchain
 pallet-poe = { path = "../pallets/poe", default-features = false }
 pallet-kitties = { path = "../pallets/kitties", default-features = false }
-pallet-template = { path = "../pallets/offchain-worker", default-features = false }
+pallet-template = { path = "../pallets/template", default-features = false }
 
 [build-dependencies]
 substrate-wasm-builder = { git = 'https://github.com/paritytech/substrate', branch = "polkadot-v0.9.26" }
@@ -63,6 +63,8 @@ runtime-benchmarks = [
     'hex-literal',
     'pallet-balances/runtime-benchmarks',
     'pallet-timestamp/runtime-benchmarks',
+    'pallet-template/runtime-benchmarks',
+    'pallet-poe/runtime-benchmarks',
     'sp-runtime/runtime-benchmarks',
 ]
 std = [
